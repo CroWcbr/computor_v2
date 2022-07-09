@@ -2,110 +2,48 @@
 
 # include <string>
 # include <vector>
+# include <map>
 
+# include "enum.hpp"
 # include "Token.hpp"
+# include "Value.hpp"
+
+class Token;
+class Value;
 
 class Lexer
 {
 private:
-	std::vector<Token>	_tokens;
-
-private: // Forbidden
-	Lexer(Lexer const &copy);
-	Lexer &operator=(Lexer const &copy);
+	lexer_type			_type;
+	std::string			_var_name;
+	std::string			_func_unknown;
+	std::vector<Token>	_expr;
 
 private:
-	void _addToken(std::string &tmp_lexeme)
-	{
-		_tokens.push_back(Token(tmp_lexeme));
-		tmp_lexeme.clear();
-	}
+	std::vector<std::string>	_preparation_token(std::string const &input);
+	std::vector<std::string>	_split_input(std::string const &input) const;
+	std::string					_separate_digit_and_alpha(std::string const &input) const;
+	bool						_is_separate_symbol(char const &symbol) const;
+	bool						_is_str(std::string const &input) const;
+	std::vector<std::string>	_right_to_left_polinom(std::vector<std::string> &left, \
+														std::vector<std::string> const &right);
 
-	void _check_read_str_or_number(const char &symbol, int &read_number, int &read_str)
-	{
-		if (read_number == 0 && read_str == 0)
-		{
-			if (isalpha(symbol))
-				read_str = 1;
-			if (isdigit(symbol) || symbol == '.')
-				read_number = 1;
-		}
-	}
+	void						_check_expr();
+	void						_check_matrix();
 
-	void _split(std::string const &input)
-	{
-		std::string	tmp_lexeme;
-		int			read_number = 0;
-		int			read_str = 0;
-
-		for (int i = 0, len = input.size(); i < len; i++)
-		{
-			char symbol = input[i];
-			_check_read_str_or_number(symbol, read_number, read_str);
-			if (_is_separate_symbol(symbol))
-			{
-				read_number = read_str = 0;
-				if (!(tmp_lexeme.empty()))
-					_addToken(tmp_lexeme);
-				if (!isspace(symbol))
-				{
-					tmp_lexeme += symbol;
-					if (symbol == '*' && i != len - 1 && input[i + 1] == '*')
-						tmp_lexeme +=  input[++i];
-					_addToken(tmp_lexeme);
-				}
-				continue;
-			}
-			else if (read_number == 1 && isalpha(symbol))
-			{
-				read_number = 0;
-				read_str = 1;
-				_addToken(tmp_lexeme);
-				tmp_lexeme += '*';
-				_addToken(tmp_lexeme);
-			}
-			tmp_lexeme += symbol;
-		}
-		if (!(tmp_lexeme.empty()))
-			_addToken(tmp_lexeme);
-	}
-
-	bool _is_separate_symbol(char symbol)
-	{
-		return  symbol == '=' || \
-				symbol == '+' || \
-				symbol == '-' || \
-				symbol == '*' || \
-				symbol == '/' || \
-				symbol == '%' || \
-				symbol == '^' || \
-				symbol == '(' || \
-				symbol == ')' || \
-				symbol == '[' || \
-				symbol == ']' || \
-				symbol == ',' || \
-				symbol == ';' || \
-				symbol == '?' || \
-				isspace(symbol);
-	}
-
-	void _print()
-	{
-		std::cout << "\033[94m";
-		std::cout << "LEXER: " << std::endl;
-		std::cout << "\t";
-		for (const auto &symbol : _tokens)
-			std::cout << symbol.getLexem() << " ";
-		std::cout <<  std::endl;
-		std::cout << "\033[0m";
-	}
+	void						_print();
 
 public:
-	Lexer() {};
-	~Lexer() {};
+	Lexer() = delete;
+	Lexer(std::string const &input, std::map<std::string, Value*> const &val);
+	~Lexer();
+	Lexer(Lexer const &copy) = delete;
+	Lexer &operator=(Lexer const &copy) = delete;
 
-	void parsing(std::string const &input)	{ _split(input); }
+	lexer_type const			&getType() const		{ return _type; }
+	std::string const			&getVarName() const		{ return _var_name; }
+	std::string const			&getFuncUnknown() const	{ return _func_unknown; }
+	std::vector<Token> const	&getTokens() const		{ return _expr; }
 
-	std::vector<Token> const	&getTokens() const { return _tokens; }
-	void						print() { _print(); };
+	void						print()					{ _print(); }
 };

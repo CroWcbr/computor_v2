@@ -1,28 +1,117 @@
 #include "../include/Computor_v2.hpp"
-//--leak-check=full
-Computor_v2::Computor_v2() {}
+
+Computor_v2::Computor_v2()
+{}
 
 Computor_v2::~Computor_v2() 
 {
-	// std::cout << "DELETE!!!!!!!" << std::endl;
-	// for (auto symbol : _value_map)
-	// {
-	// 	std::cout << "DELETE!!!!!!! : " << symbol.second << std::endl;
-	// 	delete symbol.second;
-	// }
+	for (auto &symbol : _value_map)
+	{
+		delete symbol.second;
+	}	
 }
 
 void Computor_v2::analysis(std::string input)
 {
-	Lexer lex;
-
 	try
 	{
-		lex.parsing(input);
+		Lexer lex(input, _value_map);
 		lex.print();
-		Parser pars(lex.getTokens());
-		pars.print();
-		// lex->print();
+
+		Value *tmp;
+
+		if (lex.getType() == lexer_type::MATRIX)
+			tmp = new Matrix(lex);
+		else if (lex.getType() == lexer_type::RAT_COM_MAT)
+		{
+			Computation result(lex.getTokens(), _value_map);
+			result.getValue()->setName(lex.getVarName());
+			tmp = result.getValue();
+		}
+		else if (lex.getType() == lexer_type::FUNCTION)
+			tmp = new Function(lex);
+		else
+			throw std::runtime_error("not done yet");
+
+		_value_map[lex.getVarName()] = tmp;
+
+		std::cout << _value_map.size() <<std::endl;
+		
+			for (auto &symbol : _value_map)
+				{
+					std::cout << symbol.first << " : " << symbol.second->GetName() << std::endl;
+					std::cout << "\t";
+					symbol.second->print();
+				}
+
+		// Value *tmp = result.
+
+
+		// if (_value_map.size() == 2)
+		// {
+		// 	Value *a = new Rational(20);
+		// 	Value *b = new Rational(10);
+
+		// 	std::cout << "a : ";
+		// 	a->print();
+		// 	std::cout << "b : ";
+		// 	b->print();
+		// 	Value *tmp = (*a) + b;
+		// 	std::cout << "1tmp : ";
+		// 	tmp->print();
+
+		// 	tmp = (*a) - b;
+		// 	std::cout << "2tmp : ";
+		// 	tmp->print();
+
+		// 	tmp = (*a) * b;
+		// 	std::cout << "3tmp : ";
+		// 	tmp->print();
+
+		// 	tmp = (*a) / b;
+		// 	std::cout << "4tmp : ";
+		// 	tmp->print();
+
+		// 	tmp = (*a) + 5.0;
+		// 	std::cout << "5tmp : ";
+		// 	tmp->print();
+		// }
+//		Value val;
+		// if (lex.getType() == lexer_type::FUNCTION || \
+		// 		lex.getType() == lexer_type::VAR_COM_MAT ||
+		// 		lex.getType() == lexer_type::MATRIX)
+		// 	val.update(lex, _value_map);
+		// else if (lex.getType() == lexer_type::SOLVE)
+		// 	;
+		// else if (lex.getType() == lexer_type::POLINOM)
+		// 	;
+
+		
+
+		// if (lex.getType() == lexer_type::FUNCTION || \
+		// 		lex.getType() == lexer_type::VAR_COM_MAT)
+		// 	Value val(lex, _value_map);
+		// if (lex.getType() == lexer_type::MATRIX)
+		// 	tmp =  new Matrix(lex.getType(), lex.getTokens(), _value_map);
+		// else if (lex.getType() == lexer_type::VARIABLE)
+		// 	tmp = new Variable(lex.getType(), lex.getTokens(), _value_map);
+		// else if (lex.getType() == lexer_type::VARIABLE)
+		// 	tmp = new Function(lex.getType(), lex.getTokens(), _value_map);
+		// else if (lex.getType() == lexer_type::COMPLEX)
+		// 	tmp = new Complex(lex.getType(), lex.getTokens(), _value_map);
+
+		// tmp->print();
+		// _value_map[tmp->GetName()] = tmp;
+
+		// 		for (auto &symbol : _value_map)
+		// 		{
+		// 			std::cout << symbol.first << " : " << std::endl;
+		// 			std::cout << "\t";
+		// 			symbol.second->print();
+		// 		}
+		
+
+
 // 		if (lex->getType() == lexer_type::FUNCTION || \
 // 			lex->getType() == lexer_type::MATRIX || \
 // 			lex->getType() == lexer_type::VARIABLE)
@@ -77,6 +166,6 @@ void Computor_v2::analysis(std::string input)
 	}
 	catch(const std::exception& e)
 	{
-		std::cerr << e.what() << '\n';
+		std::cout << e.what() << std::endl;
 	}
 }

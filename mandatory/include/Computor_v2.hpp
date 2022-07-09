@@ -9,25 +9,23 @@
 
 # include "Token.hpp"
 # include "Lexer.hpp"
-# include "Parser.hpp"
-// # include "Value.hpp"
-// # include "Variable.hpp"
-// # include "Function.hpp"
+# include "Value.hpp"
+# include "Rational.hpp"
+# include "Complex.hpp"
+# include "Function.hpp"
+# include "Matrix.hpp"
+# include "Computation.hpp"
 
 class Computor_v2
 {
 private:
-//	std::vector<Token> _tokens;
-//	std::vector<History>	history;
-//	std::map<std::string, Value*> _value_map;
-
-private:
-	Computor_v2(Computor_v2 const &copy);
-	Computor_v2 &operator=(Computor_v2 const &copy);
+	std::map<std::string, Value*> _value_map;
 
 public:
 	Computor_v2();
 	~Computor_v2();
+	Computor_v2(Computor_v2 const &copy) = delete;
+	Computor_v2 &operator=(Computor_v2 const &copy) = delete;
 
 	void			analysis(std::string input);
 };

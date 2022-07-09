@@ -1,5 +1,5 @@
 NAME		=	computor_v2
-
+#--leak-check=full
 CC			=	c++ -std=c++17
 CFLAGS		=	-Wall -Werror -Wextra
 
@@ -9,10 +9,24 @@ OBJ_DIR		=	./obj
 
 HEADER		=	Computor_v2.hpp \
 				Lexer.hpp \
-				Token.hpp
+				Token.hpp \
+				enum.hpp \
+				Value.hpp \
+				Rational.hpp \
+				Complex.hpp \
+				Matrix.hpp \
+				Function.hpp \
+				Computation.hpp
 
 SRC			=	main.cpp \
-				Computor_v2.cpp
+				Computor_v2.cpp \
+				Lexer.cpp \
+				Token.cpp \
+				Rational.cpp \
+				Complex.cpp \
+				Matrix.cpp \
+				Function.cpp \
+				Computation.cpp
 
 OBJ			=	$(addprefix $(OBJ_DIR)/, $(SRC:.cpp=.o))
 

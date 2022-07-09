@@ -43,7 +43,7 @@ int main()
 	while (true)
 	{
 		std::string	input;
-		std::cout << "> ";
+		std::cout << " > ";
 		getline(std::cin, input);
 
 		if (std::cin.eof())				//Ctrl + 'D'
