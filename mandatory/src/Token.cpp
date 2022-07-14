@@ -4,7 +4,14 @@ Token::Token(std::string const &lexeme)
 {
 	_lexeme = lexeme;
 	_which_token_type(lexeme);
-	_rang = 0;
+	_setRang();
+}
+
+Token::Token(std::string const &lexeme, token_type const &type)
+{
+	_lexeme = lexeme;
+	_type = type;
+	_setRang();
 }
 
 Token::~Token() 
@@ -25,7 +32,7 @@ Token &Token::operator=(Token const &copy)
 	return *this;
 }
 
-void Token::setRang()
+void Token::_setRang()
 {
 	if (_lexeme == "+" || _lexeme == "-")
 		_rang = 1;

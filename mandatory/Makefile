@@ -16,7 +16,9 @@ HEADER		=	Computor_v2.hpp \
 				Complex.hpp \
 				Matrix.hpp \
 				Function.hpp \
-				Computation.hpp
+				Computation.hpp \
+				Computor_v1.hpp \
+				Computor_v1_Parser.hpp
 
 SRC			=	main.cpp \
 				Computor_v2.cpp \
@@ -26,7 +28,8 @@ SRC			=	main.cpp \
 				Complex.cpp \
 				Matrix.cpp \
 				Function.cpp \
-				Computation.cpp
+				Computation.cpp \
+				Computor_v1.cpp
 
 OBJ			=	$(addprefix $(OBJ_DIR)/, $(SRC:.cpp=.o))
 

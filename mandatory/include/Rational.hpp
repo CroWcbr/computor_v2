@@ -21,15 +21,19 @@ private:
 	double		_rational;
 
 public:
-	Rational();
-	Rational(Lexer const &lex);
-	Rational(double rat);
+	Rational() = delete;
 	Rational(const Rational &other) = delete;
 	Rational &operator=(const Rational &other) = delete;
+
+	Rational(Lexer const &lex);
+	Rational(double rat);
 	virtual ~Rational();
+
+	double const			&getRational() const { return _rational; }
 
 	virtual void			print() const;
 	virtual std::string		to_string() const;
+	virtual Value*			clone() const;
 
 	virtual Value*			operator+(const Value *rhs) const;
 	virtual Value*			operator-(const Value *rhs) const;

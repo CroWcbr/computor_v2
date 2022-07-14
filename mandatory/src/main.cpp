@@ -3,29 +3,31 @@
 
 void _signal_handler(int signal)
 {
-	std::string msg;
-
-	msg = "\rSTOP SIGNAL";
-	switch (signal)
 	{
-		case -1:
-			msg += " Ctrl + D ";
-			break;
-		case 2:
-			msg += " Ctrl + C ";
-			break;
-		case 3:
-			msg += " Ctrl + / ";
-			break;
-		case 20:
-			msg += " Ctrl + Z ";
-			break;
-	}
-	msg += "from user";
+		std::string msg;
 
-	std::cout << "\033[93m";
-	std::cout << msg << std::endl;
-	std::cout << "\033[0m";
+		msg = "\rSTOP SIGNAL";
+		switch (signal)
+		{
+			case -1:
+				msg.append(" Ctrl + D ");
+				break;
+			case 2:
+				msg.append(" Ctrl + C ");
+				break;
+			case 3:
+				msg.append(" Ctrl + / ");
+				break;
+			case 20:
+				msg.append(" Ctrl + Z ");
+				break;
+		}
+		msg.append("from user");
+
+		std::cout << "\033[93m";
+		std::cout << msg << std::endl;
+		std::cout << "\033[0m";
+	}
 	exit(signal);
 }
 
@@ -54,7 +56,7 @@ int main()
 		if (input == "quit")
 			break;
 
-		comp.analysis(input);
+//		comp.analysis(input);
 	}
 	std::cout << "\033[95m";
 	std::cout << "The END!!!" << std::endl;

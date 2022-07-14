@@ -24,7 +24,7 @@ private:
 	std::string			_name;
 
 public:
-	Value() = delete;
+	Value() {};
 	Value(value_type const &type, std::string const &name): 
 		_type(type),
 		_name(name)
@@ -36,10 +36,15 @@ public:
 	value_type const		&GetType() const { return _type; };
 	std::string const		&GetName() const { return _name; };
 
-	void					setName(std::string const &name) { _name = name; }
+	void					setName(std::string const &name) { 
+		std::cout << "result.getValue()->setName(lex.getVarName()) : " << name << " : "<< _name << std::endl;
+		_name = name;
+		std::cout << "result.getValue()->setName(lex.getVarName()) : " << name << " : "<< _name << std::endl;
+		}
 
 	virtual void			print() const = 0;
 	virtual std::string		to_string() const = 0;
+	virtual Value*			clone() const = 0;
 
 	virtual Value*			operator+(const Value *rhs) const = 0;
 	virtual Value*			operator-(const Value *rhs) const = 0;

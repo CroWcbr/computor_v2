@@ -17,24 +17,23 @@ class Value;
 class Computation
 {
 private:
-	Value*	result;
-//	Value*	(Value::*op)(const Value *rhs) const;
+	std::stack<Value*>	_st_n;
+	std::stack<Token>	_st_o;
+
+	void		_math(std::map<std::string, Value*> const &val);
+	Value*		(Value::*_op(std::string const &op_str))(const Value *rhs) const;
+	void		_clear_stack();
 
 
-	void		_math(std::stack<Value*> &_st_n, std::stack<Token> &_st_o);
-	int			_getRang(std::string const &oper);
 
-
-	Value* (Value::*_op(std::string const &op_str))(const Value *rhs) const;
-
-	// void f0(char) {}
-	// void (*f1())(char) { return f0; }
 public:
 	Computation() = delete;
-	Computation(std::vector<Token> const &tokens, std::map<std::string, Value*> const &val);
-	~Computation();
 	Computation(Computation const &copy) = delete;
 	Computation &operator=(Computation const &copy) = delete;
 
-	Value*		getValue() { return result; }
+	Computation(std::vector<Token> const &tokens, \
+				std::map<std::string, Value*> const &val);
+	~Computation();
+
+	Value*		getValue() const { return _st_n.top()->clone(); }
 };

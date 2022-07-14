@@ -23,21 +23,27 @@ private:
 	std::vector<double>		_mat;
 
 public:
-	Matrix();
+	Matrix() = delete;
+	Matrix(const Matrix &other);
+	Matrix &operator=(const Matrix &other);
+
 	Matrix(Lexer const &lex);
 	Matrix(double rat);
-	Matrix(const Matrix &other) = delete;
-	Matrix &operator=(const Matrix &other) = delete;
 	virtual ~Matrix();
 
-	virtual void			print() const;
-	virtual std::string		to_string() const;
+	virtual void				print() const;
+	virtual std::string			to_string() const;
+	virtual Value*				clone() const;
 
-	virtual Value*			operator+(const Value *rhs) const;
-	virtual Value*			operator-(const Value *rhs) const;
-	virtual Value*			operator*(const Value *rhs) const;
-	virtual Value*			operator/(const Value *rhs) const;
-	virtual Value*			operator%(const Value *rhs) const;
-	virtual Value*			operator^(const Value *rhs) const;
-	virtual Value*			matrix_miltiple(const Value *rhs) const;
+	int const					&getCol() const { return _col; }
+	int const					&getRow() const { return _row; }
+	std::vector<double> const	&getMat() const { return _mat; }	
+
+	virtual Value*				operator+(const Value *rhs) const;
+	virtual Value*				operator-(const Value *rhs) const;
+	virtual Value*				operator*(const Value *rhs) const;
+	virtual Value*				operator/(const Value *rhs) const;
+	virtual Value*				operator%(const Value *rhs) const;
+	virtual Value*				operator^(const Value *rhs) const;
+	virtual Value*				matrix_miltiple(const Value *rhs) const;
 };

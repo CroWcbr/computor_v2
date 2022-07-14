@@ -22,15 +22,20 @@ private:
 	double		_complex;
 
 public:
-	Complex();
-	Complex(Lexer const &lex);
-	Complex(double rat, double com);
+	Complex() = delete;
 	Complex(const Complex &other) = delete;
 	Complex &operator=(const Complex &other) = delete;
+
+	Complex(Lexer const &lex);
+	Complex(double rat, double com);
 	virtual ~Complex();
+
+	double const			&getRational() const { return _rational; }
+	double const			&getComplex() const { return _complex; }
 
 	virtual void 			print() const;
 	virtual std::string		to_string() const;
+	virtual Value*			clone() const;
 
 	virtual Value*			operator+(const Value *rhs) const;
 	virtual Value*			operator-(const Value *rhs) const;

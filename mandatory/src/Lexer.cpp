@@ -13,15 +13,28 @@ Lexer::Lexer(std::string const &input, std::map<std::string, Value*> const &val)
 		if (_expr.back().getType() == token_type::VARIABLE && \
 				val.find(lexem) != val.end() && \
 				val.find(lexem)->second->GetType() == value_type::FUNCTION)
+		{
 			_expr.back().setType(token_type::FUNCTION);
+			_expr.back().updateRang();
+		}
 		
-		_expr.back().setRang();
+		if (_type == lexer_type::POLINOM && \
+				_expr.back().getType() == token_type::VARIABLE && \
+				val.find(lexem) == val.end())
+		{
+			if (_func_unknown == "")
+				_func_unknown = lexem;
+			if (_func_unknown != lexem)
+				throw std::runtime_error("PARSE ERROR! POLINOM more then 0ne unknown");
+		}
+
 		prev = lexem;
 	}
 	if (_type == lexer_type::MATRIX)
 		_check_matrix();
 	else
 		_check_expr();
+	print();
 }
 
 Lexer::~Lexer() {}
@@ -178,7 +191,7 @@ std::vector<std::string> Lexer::_right_to_left_polinom(std::vector<std::string> 
 	return left;
 }
 
-void Lexer::_print()
+void Lexer::_print() const
 {
 	std::vector<std::string>	type_print = \
 		{"Solve", "Polinom", \
@@ -198,7 +211,7 @@ void Lexer::_print()
 	std::cout << "\033[0m";
 }
 
-void  Lexer::_check_matrix()
+void  Lexer::_check_matrix() const
 {
 	if (_expr.size() < 5)
 		throw std::runtime_error("PARSE MATRIX ERROR! _expr.size() < 5");
@@ -263,7 +276,7 @@ void  Lexer::_check_matrix()
 		throw std::runtime_error("PARSE MATRIX ERROR! wrong square");
 }
 
-void Lexer::_check_expr()
+void Lexer::_check_expr() const
 {
 	if (_expr[0].getType() == token_type::OPERATION)
 		throw std::runtime_error("PARSE ERROR! incorrect syntax: Wrong first symbol");
@@ -318,7 +331,7 @@ void Lexer::_check_expr()
 				tok_i == token_type::COMPLEX) && \
 				!(tok_next == token_type::OPERATION || \
 				lex_next == ")"))
-			throw std::runtime_error("PARSE ERROR! double variable or digit or complex");
+			throw std::runtime_error("PARSE ERROR! incorrect syntax: wrong symbol after variable or digit or complex");
 	}
 	if (bracet)
 		throw std::runtime_error("PARSE ERROR! wrong number bracet");

@@ -28,22 +28,24 @@ private:
 	std::vector<std::string>	_right_to_left_polinom(std::vector<std::string> &left, \
 														std::vector<std::string> const &right);
 
-	void						_check_expr();
-	void						_check_matrix();
+	void						_check_expr() const;
+	void						_check_matrix() const;
 
-	void						_print();
+	void						_print() const;
 
 public:
 	Lexer() = delete;
-	Lexer(std::string const &input, std::map<std::string, Value*> const &val);
-	~Lexer();
 	Lexer(Lexer const &copy) = delete;
 	Lexer &operator=(Lexer const &copy) = delete;
+
+	Lexer(std::string const &input, \
+			std::map<std::string, Value*> const &val);
+	~Lexer();
 
 	lexer_type const			&getType() const		{ return _type; }
 	std::string const			&getVarName() const		{ return _var_name; }
 	std::string const			&getFuncUnknown() const	{ return _func_unknown; }
 	std::vector<Token> const	&getTokens() const		{ return _expr; }
 
-	void						print()					{ _print(); }
+	void						print() const			{ _print(); }
 };
