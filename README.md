@@ -1,6 +1,15 @@
 # computor_v2
 
-## Mandatory part
+## Mandatory part (draft bonus part, work but code is very simple)
 - lexer done
-- computation in progress
-- overload operator in progress
+- computation done
+- overload operator done
+- POLINOM in progress
+
+## Bonus part
+- lexer done
+- computation done
+- overload operator done
+- POLINOM in progress
+- Standart Function in progress
+- DRAW f(x) in progress
