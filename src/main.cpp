@@ -1,9 +1,4 @@
 #include "../include/main_library.hpp"
-// valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes  ./computor_v2
-// график
-// вектор
-// проверить историю
-// расширить тесты
 
 static Computor_v2	comp;
 bool is_radian = false;
@@ -31,7 +26,6 @@ void _signal_handler(int signal)
 	}
 	exit(signal);
 }
-
 
 int main()
 {

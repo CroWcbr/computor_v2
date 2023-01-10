@@ -10,7 +10,7 @@ void Computor_v2::clear_all()
 		delete symbol.second;
 }
 
-void Computor_v2::analysis(std::string input)
+void Computor_v2::analysis(std::string const &input)
 {
 	Value	*tmp = NULL;
 	try
@@ -18,7 +18,10 @@ void Computor_v2::analysis(std::string input)
 		Lexer lex(input, _value_map);
 
 		if (lex.getType() == lexer_type::COMMAND)
+		{
 			_make_command(lex);
+			
+		}
 		else if (lex.getType() == lexer_type::MATRIX)
 			tmp = new Matrix(lex);
 		else
@@ -34,23 +37,21 @@ void Computor_v2::analysis(std::string input)
 				delete tmp_del;
 			}
 		}
-		_add_value_map(lex, tmp);
-
-		if (lex.getType() == lexer_type::MATRIX || \
-				lex.getType() == lexer_type::RAT_COM_MAT || \
-				lex.getType() == lexer_type::FUNCTION)
-			_add_history(input, tmp->to_string());
+		_add_value_map(lex, tmp, input);
 	}
 	catch(const std::exception& e)
 	{
+		_add_history(input, e.what());
 		std::cout << e.what() << std::endl;
 		delete tmp;
 	}
 }
 
-void Computor_v2::_add_value_map(Lexer const &lex, Value *tmp)
+void Computor_v2::_add_value_map(Lexer const &lex, Value *tmp, std::string const &input)
 {
-	if (lex.getType() == lexer_type::MATRIX || \
+	if (lex.getType() == lexer_type::COMMAND)
+		_add_history(input, "Command done");
+	else if (lex.getType() == lexer_type::MATRIX || \
 		lex.getType() == lexer_type::RAT_COM_MAT || \
 		lex.getType() == lexer_type::FUNCTION)
 	{
@@ -59,6 +60,7 @@ void Computor_v2::_add_value_map(Lexer const &lex, Value *tmp)
 		_value_map[lex.getVarName()] = tmp;
 		std::cout << "RESULT : ";
 		tmp->print();
+		_add_history(input, tmp->to_string());
 	}
 	else
 	{
@@ -71,11 +73,12 @@ void Computor_v2::_add_value_map(Lexer const &lex, Value *tmp)
 		{
 			std::cout << "POLINOM : ";
 			if (tmp->getSimple() == 0)
-				throw std::runtime_error("Function is not simple : CANNOT be SOLVED");
+				throw std::runtime_error("Polinom function is not simple : CANNOT be SOLVED");
 			Computor_v1 pol(tmp);
 			std::cout << pol.getMSG() << std::endl;
 			tmp->print();
 		}
+		_add_history(input, tmp->to_string());
 		delete tmp;
 	}
 }
@@ -143,20 +146,27 @@ void Computor_v2::_print_help() const
 	std::cout << "Computor v2 with BONUS" << std::endl;
 	std::cout << "This project is the first of a serie to renew your relationship to ";
 	std::cout << "mathematics, it will be very useful, essential even, for many more projects." << std::endl;
-	// std::cout << "Function curve display" << std::endl;
-	std::cout << "#Added usual functions:" << std::endl;
-	std::cout << "\t- exponential" << std::endl;
-	std::cout << "\t- square root" << std::endl;
-	std::cout << "\t- sine / cosine / tangent / cotangent" << std::endl;
-	std::cout << "\t- ln / log" << std::endl;
-	std::cout << "\t- absolute value" << std::endl;
-	std::cout << "#Radian computation for angles" << std::endl;
-	std::cout << "#Function Composition" << std::endl;
-	std::cout << "#Norm computation" << std::endl;
-	std::cout << "#Display of the list of stored variables and their values" << std::endl;
-	std::cout << "#History of commands with results" << std::endl;
-	// std::cout << "Matrix inversion" << std::endl;
-	std::cout << "An extension of the matrix computation applied to the vector computation" << std::endl;
+	std::cout << "Command:" << std::endl;
+	std::cout << "\tshow\t\t - display variables" << std::endl;
+	std::cout << "\thistory\t\t - display log" << std::endl;
+	std::cout << "\thelp\t\t - show this" << std::endl;
+	std::cout << "\tchange_mod\t - radians on/off =)" << std::endl;
+	std::cout << "\ttest\t\t - start test" << std::endl;
+	std::cout << "BONUS:" << std::endl;
+	// std::cout << "\t#Function curve display" << std::endl;
+	std::cout << "\t#Added usual functions:" << std::endl;
+	std::cout << "\t\t- exponential" << std::endl;
+	std::cout << "\t\t- square root" << std::endl;
+	std::cout << "\t\t- sine / cosine / tangent / cotangent" << std::endl;
+	std::cout << "\t\t- ln / log" << std::endl;
+	std::cout << "\t\t- absolute value" << std::endl;
+	std::cout << "\t#Radian computation for angles" << std::endl;
+	std::cout << "\t#Function Composition" << std::endl;
+	std::cout << "\t#Norm computation" << std::endl;
+	std::cout << "\t#Display of the list of stored variables and their values" << std::endl;
+	std::cout << "\t#History of commands with results" << std::endl;
+	// std::cout << "\t#Matrix inversion" << std::endl;
+	std::cout << "\t#An extension of the matrix computation applied to the vector computation" << std::endl;
 }
 
 void Computor_v2::_change_mod()
@@ -190,7 +200,6 @@ void Computor_v2::_make_test() const
 			break ;
 	}
 	test_read.close();
-
 
 	std::cout << str << std::endl;
 }

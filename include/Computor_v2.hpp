@@ -25,7 +25,7 @@ private:
 	Value			*_new_FUNCTION(Lexer const &lex);
 	Value			*_new_POLINOM(Lexer const &lex);
 
-	void			_add_value_map(Lexer const &lex, Value *tmp);
+	void			_add_value_map(Lexer const &lex, Value *tmp, std::string const &input);
 	void			_add_history(std::string const &input, std::string const &result);
 
 	void			_make_command(Lexer const &lex);
@@ -42,5 +42,5 @@ public:
 	Computor_v2 &operator=(Computor_v2 const &copy) = delete;
 
 	void			clear_all();
-	void			analysis(std::string input);
+	void			analysis(std::string const &input);
 };

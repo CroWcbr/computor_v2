@@ -75,9 +75,12 @@ std::vector<std::string> Lexer::_preparation_token(std::string const &input)
 		return command;
 	}
 
+	if (equal_pos == 0)
+		throw std::runtime_error("PARSE ERROR! No LEFT part");
+	if (equal_pos == input.size() - 1)
+		throw std::runtime_error("PARSE ERROR! No RIGHT part");
 	std::vector<std::string>	left_tokens = _split_input(input.substr(0, equal_pos));
 	std::vector<std::string>	right_tokens = _split_input(input.substr(++equal_pos));
-
 	if (left_tokens.size() == 0)
 		throw std::runtime_error("PARSE ERROR! No LEFT part");
 	if (right_tokens.size() == 0)
@@ -92,14 +95,14 @@ std::vector<std::string> Lexer::_preparation_token(std::string const &input)
 	else if (right_tokens.back() == "?" && right_tokens.size() == 1)
 	{
 		_type = lexer_type::SOLVE;
-		_var_name = "_solve";
+		_var_name = "cos";
 		return left_tokens;
 	}
 	else if (left_tokens.size() == 1 && \
 			_is_str(left_tokens.front()))
 	{
-		if (left_tokens.front() == "i")
-			throw std::runtime_error("PARSE ERROR! Forbidden unknown name 'i'");
+		if (_is_forbidden_name(left_tokens.front()))
+			throw std::runtime_error("PARSE ERROR! Forbidden unknown name : " + left_tokens[0]);
 		if (right_tokens.front() == "[")
 			_type = lexer_type::MATRIX;
 		else
