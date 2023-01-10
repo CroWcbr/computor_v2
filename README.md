@@ -11,18 +11,18 @@ This project is the first of a serie to renew your relationship to mathematics, 
 - test - start test
 
 ## BONUS:
-Added usual functions:
-- exponential
-- square root
-- sine / cosine / tangent / cotangent
-- ln / log
-- absolute value
-Radian computation for angles
-Function Composition
-Norm computation
-Display of the list of stored variables and their values
-History of commands with results
-An extension of the matrix computation applied to the vector computation
+- Added usual functions:
+	- exponential
+	- square root
+	- sine / cosine / tangent / cotangent
+	- ln / log
+	- absolute value
+- Radian computation for angles
+- Function Composition
+- Norm computation
+- Display of the list of stored variables and their values
+- History of commands with results
+- An extension of the matrix computation applied to the vector computation
 
 ## nearly all done
 - no Function curve display
