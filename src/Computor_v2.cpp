@@ -68,6 +68,7 @@ void Computor_v2::_add_value_map(Lexer const &lex, Value *tmp, std::string const
 		{
 			std::cout << "SOLVE : ";
 			tmp->print();
+			_add_history(input, tmp->to_string());
 		}
 		if (lex.getType() == lexer_type::POLINOM)
 		{
@@ -76,9 +77,9 @@ void Computor_v2::_add_value_map(Lexer const &lex, Value *tmp, std::string const
 				throw std::runtime_error("Polinom function is not simple : CANNOT be SOLVED");
 			Computor_v1 pol(tmp);
 			std::cout << pol.getMSG() << std::endl;
+			_add_history(input, pol.getMSG());
 			tmp->print();
 		}
-		_add_history(input, tmp->to_string());
 		delete tmp;
 	}
 }

@@ -51,7 +51,7 @@ void Computor_v1::_decision()
 	else if (_degree == 0)
 		_msg_decision = "Inequality is wrong : " + std::to_string(_c) + " = 0" ;
 	else if (_degree == 1)
-		_msg_decision = "The solution is : " + std::to_string(-_c / _b);
+		_msg_decision = "The solution is : " + std::to_string(_c == 0 ? 0 : -_c / _b);
 	else if (_degree > 2)
 		_msg_decision = "The polynomial degree is " + std::to_string(_degree) + ", I can't solve.";
 	else
@@ -64,11 +64,11 @@ void Computor_v1::_decision()
 		double part_2_sqrt = _D / (_a * _a * 2 * 2);
 		if (_D < 0)
 			_msg_decision = "First solution : " + std::to_string(part_1)  + " + i * " + std::to_string(_ft_sqrt_rat(-part_2_sqrt)) + \
-								   "\nSecond solution : " + std::to_string(part_1)  + " - i * " + std::to_string(_ft_sqrt_rat(-part_2_sqrt));
+								   "\tSecond solution : " + std::to_string(part_1)  + " - i * " + std::to_string(_ft_sqrt_rat(-part_2_sqrt));
 		else if (_D == 0)
 			_msg_decision = "The solution is : " + std::to_string(part_1);
 		else
 			_msg_decision = "First solution : " + std::to_string(part_1 + _ft_sqrt_rat(part_2_sqrt)) + \
-								   "\nSecond solution : " + std::to_string(part_1 - _ft_sqrt_rat(part_2_sqrt));
+								   "\tSecond solution : " + std::to_string(part_1 - _ft_sqrt_rat(part_2_sqrt));
 	}
 }
