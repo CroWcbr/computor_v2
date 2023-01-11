@@ -259,6 +259,7 @@ Value* Rational::operator^(const Value *rhs) const
 
 Value* Rational::matrix_miltiple(const Value *rhs) const
 {
+	(void)rhs;
 	std::cout << "Rational *matrix_miltiple" << std::endl;
 	throw std::runtime_error("COMPUTATION ERROR! Rational *matrix_miltiple");
 }

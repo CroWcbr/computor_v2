@@ -195,6 +195,7 @@ Value* Matrix::operator/(const Value *rhs) const
 
 Value* Matrix::operator%(const Value *rhs) const
 {
+	(void)rhs;
 	std::cout << "Matrix *operator%" << std::endl;
 	throw std::runtime_error("COMPUTATION ERROR! Matrix *operator%");
 }

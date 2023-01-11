@@ -37,7 +37,6 @@ int main()
 	signal(SIGQUIT, _signal_handler);	//Ctrl + '\'
 	signal(SIGTSTP, _signal_handler);	//Ctrl + 'Z'
 
-	bool is_radian = false;
 	while (true)
 	{
 		std::string	input;

@@ -82,7 +82,6 @@ void Token::_which_token_type(std::string const &lexeme)
 
 bool Token::_is_digit(std::string const &lexeme) const
 {
-	bool point = false;
 	if (lexeme.front() == '.' || lexeme.back() == '.')
 		return false;
 	for (const auto &symbol : lexeme)

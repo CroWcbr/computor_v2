@@ -223,6 +223,7 @@ Value* Complex::operator/(const Value *rhs) const
 
 Value* Complex::operator%(const Value *rhs) const
 {
+	(void)rhs;
 	std::cout << "Complex *operator%" << std::endl;
 	throw std::runtime_error("COMPUTATION ERROR! Complex *operator%");
 }
@@ -284,6 +285,7 @@ Value* Complex::operator^(const Value *rhs) const
 
 Value* Complex::matrix_miltiple(const Value *rhs) const
 {
+	(void)rhs;
 	std::cout << "Complex *matrix_miltiple" << std::endl;
 	throw std::runtime_error("COMPUTATION ERROR! Complex *matrix_miltiple");
 }

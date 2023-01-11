@@ -30,7 +30,7 @@ void Lexer::_print_check_token() const
 	std::vector<std::string>	value_type_print = \
 		{"RATIONAL", "COMPLEX", \
 		"MATRIX", "FUNCTION"};
-	for (int i = 0; i < _expr.size(); i++)
+	for (size_t i = 0; i < _expr.size(); i++)
 	{
 		std::cout << "\t" << i << "\t" << _expr[i].getLexem() << "\t" << lexer_type_print[(int)_expr[i].getType()] << "\t";
 		if (_val.find(_expr[i].getLexem()) != _val.end())
@@ -177,7 +177,7 @@ std::vector<std::string> Lexer::_split_input(std::string const &input) const
 std::string Lexer::_separate_digit_and_alpha(std::string const &input) const
 {	// 2x -> 2 *x && x2 -> x * 2
 	std::string tmp = input;
-	for(int i = 0; i < tmp.size() - 1; i++)
+	for(size_t i = 0; i < tmp.size() - 1; i++)
 		if ((isdigit(tmp[i]) && isalpha(tmp[i + 1])) || \
 				(isdigit(tmp[i + 1]) && isalpha(tmp[i])))
 			tmp.insert(i + 1, "*");

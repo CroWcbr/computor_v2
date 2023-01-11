@@ -392,6 +392,7 @@ Value* Function::operator^(const Value *rhs) const
 
 Value* Function::matrix_miltiple(const Value *rhs) const
 {
+	(void)rhs;
 	std::cout << "Function *matrix_miltiple" << std::endl;
 	throw std::runtime_error("COMPUTATION ERROR! Function *matrix_miltiple");
 }
