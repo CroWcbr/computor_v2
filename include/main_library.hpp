@@ -25,4 +25,8 @@
 # include "math_function.hpp"
 # include "Computor_v1.hpp"
 
+#include <SFML/Graphics.hpp>
+
+void draw();
+
 extern bool is_radian;

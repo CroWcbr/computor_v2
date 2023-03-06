@@ -11,6 +11,16 @@ private:
 	int						_col;
 	std::vector<double>		_mat;
 
+private:
+	Matrix						inverse() const;
+	bool						is_square() const;
+	double						determinant() const;
+	Matrix						upper_triangular_matrix_change_znak_when_swap_row(Matrix tmp) const;
+	double						ft_abs_double(const double &tmp) const;
+	Matrix						cofactor_matrix_T(void) const;
+	Matrix						&scl(const double &a);
+	Matrix						transpose() const;
+
 public:
 	Matrix() = delete;
 
@@ -37,4 +47,6 @@ public:
 	virtual Value*				operator%(const Value *rhs) const;
 	virtual Value*				operator^(const Value *rhs) const;
 	virtual Value*				matrix_miltiple(const Value *rhs) const;
+
+
 };

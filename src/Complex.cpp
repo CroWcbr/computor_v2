@@ -230,16 +230,16 @@ Value* Complex::operator%(const Value *rhs) const
 
 Value* Complex::operator^(const Value *rhs) const
 {
-	std::cout << "Rational *operator^" << std::endl;
+	std::cout << "Complex *operator^" << std::endl;
 	double real = _real;
 	double image = _imag;
 	if (rhs->GetType() == value_type::RATIONAL)
 	{
 		const Rational	*tmp_rat = static_cast<const Rational*>(rhs);
 		if (tmp_rat->getReal() < 0)
-			throw std::runtime_error("COMPUTATION ERROR! Rational *operator^ : pow < 0");
+			throw std::runtime_error("COMPUTATION ERROR! Complex *operator^ : pow < 0");
 		if (tmp_rat->getReal() != static_cast<int>(tmp_rat->getReal()))
-			throw std::runtime_error("COMPUTATION ERROR! Rational *operator^ : pow is not int");
+			throw std::runtime_error("COMPUTATION ERROR! Complex *operator^ : pow is not int");
 		for (int i = tmp_rat->getReal(); i > 0; i--)
 		{
 			double tmp_real = real;

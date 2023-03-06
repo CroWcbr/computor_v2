@@ -2,11 +2,16 @@
 
 Computor_v1::Computor_v1(Value const *val)
 {
+	std::cout << "Computor_v1" << std::endl;
+	val->print();
 	if (val->GetType() == value_type::RATIONAL)
 	{
 		_map[0] = static_cast<const Rational*>(val)->getReal();
 		_x = "x";
 	}
+	else if (val->GetType() == value_type::MATRIX || \
+			val->GetType() == value_type::COMPLEX)
+		throw std::runtime_error("COMPUTATION ERROR! MATRIS or COMPEX in polinom");
 	else
 	{
 		_map = static_cast<const Function*>(val)->getMap();

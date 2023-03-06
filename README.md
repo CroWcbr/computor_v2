@@ -25,7 +25,7 @@ This project is the first of a serie to renew your relationship to mathematics, 
 - Norm computation
 - Display of the list of stored variables and their values
 - History of commands with results
-- An extension of the matrix computation applied to the vector computation
+- An extension of the matrix computation applied to the vector computation (vector = matrix with 1 row or column)
 - Matrix inversion (matrix ^ (-1))
 
 ## table type

@@ -104,6 +104,8 @@ void Computor_v2::_make_command(Lexer const &lex)
 		_print_help();
 	else if (lex.getVarName() == "test")
 		_make_test();
+	else if (lex.getVarName() == "draw")
+		_make_draw();
 	else
 		throw std::runtime_error("!!!! Unknown command");
 }
@@ -203,4 +205,38 @@ void Computor_v2::_make_test() const
 	test_read.close();
 
 	std::cout << str << std::endl;
+}
+
+void Computor_v2::_make_draw() const
+{
+	std::cout << "input func name to draw : ";
+	std::string str;
+	getline(std::cin, str);
+	if (str.empty())
+		throw std::runtime_error("DRAW ERROR! No FUNC name");
+	if (_value_map.find(str) == _value_map.end())
+		throw std::runtime_error("DRAW ERROR! No this FUNC");
+	if (_value_map.find(str)->second->GetType() != value_type::FUNCTION)
+		throw std::runtime_error("DRAW ERROR! it is not FUNC");
+
+	std::vector<double> x;
+	std::vector<double> y;
+
+	std::vector<Token>	tmp_token;
+	tmp_token.push_back(Token(str, token_type::FUNCTION));
+	tmp_token.push_back(Token("(", token_type::BRACET));
+	tmp_token.push_back(Token("0", token_type::DIGIT));
+	tmp_token.push_back(Token(")", token_type::BRACET));
+
+	for (int i = -100 ; i <= 100; i++)
+	{
+		tmp_token[2] = Token(std::to_string(i), token_type::DIGIT);
+		Computation		result(tmp_token, _value_map);
+		const Rational	*rmp_rat = static_cast<const Rational*>(result.getValue());
+		x.push_back(i);
+		y.push_back(rmp_rat->getReal());
+	}
+	for(size_t i = 0; i < x.size(); i++)
+		std::cout << x[i] << "\t" << y[i] << std::endl;
+	draw();
 }

@@ -1,7 +1,9 @@
 NAME		=	computor_v2
 
-CC			=	c++ -std=c++17
+CC			=	g++
 CFLAGS		=	-Wall -Werror -Wextra
+DRAW_FLAG	=	-lsfml-graphics -lsfml-window -lsfml-system
+
 
 HEADER_DIR	=	./include
 SRC_DIR		=	./src
@@ -31,7 +33,8 @@ SRC			=	main.cpp \
 				Function.cpp \
 				Computation.cpp \
 				math_function.cpp \
-				Computor_v1.cpp
+				Computor_v1.cpp \
+				draw_curve.cpp
 
 OBJ			=	$(addprefix $(OBJ_DIR)/, $(SRC:.cpp=.o))
 
@@ -60,7 +63,7 @@ $(OBJ_DIR)/%.o	:	$(SRC_DIR)/%.cpp ${HEADER_DIR}/*.hpp Makefile
 					$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME)		:	$(OBJ)
-				$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
+				$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(DRAW_FLAG)
 				@echo "\tCompiling...\t" [ $(NAME) ] $(SUCCESS)
 
 clean		:

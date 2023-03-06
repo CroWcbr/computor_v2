@@ -288,6 +288,13 @@ void Lexer::_tokenization(std::vector<std::string> const &input_to_vector)
 			if (!_check_solve())
 				throw std::runtime_error("PARSE ERROR! SOLVE has unknown variable");
 		}
+
+		if (_type == lexer_type::POLINOM && 
+			_val.find(_expr.back().getLexem()) != _val.end() &&
+			_val.find(_expr.back().getLexem())->second->GetType() == value_type::MATRIX)
+			throw std::runtime_error("PARSE ERROR! POLINOM has MATRIX variable");
+
+
 	}
 }
 
@@ -378,7 +385,8 @@ void  Lexer::_check_command() const
 			_var_name != "show" && \
 			_var_name != "history" && \
 			_var_name != "change_mod" && \
-			_var_name != "test")
+			_var_name != "test" && \
+			_var_name != "draw")
 		throw std::runtime_error("PARSE ERROR! unknown command");
 }
 
@@ -394,9 +402,9 @@ void Lexer::_check_expr() const
 		throw std::runtime_error("PARSE ERROR! incorrect syntax: Wrong first symbol");
 
 	int	len = _expr.size() - 1;
-	if (!(_expr[len].getType() == token_type::DIGIT || \
-			_expr[len].getType() == token_type::COMPLEX || \
-			_expr[len].getType() == token_type::VARIABLE || \
+	if (!(_expr[len].getType() == token_type::DIGIT || 
+			_expr[len].getType() == token_type::COMPLEX || 
+			_expr[len].getType() == token_type::VARIABLE || 
 			_expr[len].getLexem() == ")"))
 		throw std::runtime_error("PARSE ERROR! incorrect syntax: Wrong last symbol");
 

@@ -206,18 +206,32 @@ Value* Matrix::operator^(const Value *rhs) const
 	if (rhs->GetType() == value_type::RATIONAL)
 	{
 		const Rational	*tmp_rat = static_cast<const Rational*>(rhs);
+		if (_row != _col)
+			throw std::runtime_error("COMPUTATION ERROR! Matrix *operator^ : matrix is not squere");
+		if (tmp_rat->getReal() == -1)
+			return new Matrix(inverse());
 		if (tmp_rat->getReal() < 0)
 			throw std::runtime_error("COMPUTATION ERROR! Matrix *operator^ : pow < 0");
 		if (tmp_rat->getReal() != static_cast<int>(tmp_rat->getReal()))
 			throw std::runtime_error("COMPUTATION ERROR! Matrix *operator^ : pow is not int");
-		Value *tmp = new Matrix(*this);
-		for (int i = tmp_rat->getReal(); i > 1; i--)
+		if (tmp_rat->getReal() == 0)
 		{
-			Value *tmp_save = tmp;
-			tmp = this->matrix_miltiple(tmp);
-			delete tmp_save;
+			Matrix *tmp = new Matrix(_row, _col);
+			for (int i = 0; i < _row; i++)
+				tmp->_mat[i * _row + i] = 1;
+			return tmp;
 		}
-		return tmp;
+		else
+		{
+			Value *tmp = new Matrix(*this);
+			for (int i = tmp_rat->getReal(); i > 1; i--)
+			{
+				Value *tmp_save = tmp;
+				tmp = this->matrix_miltiple(tmp);
+				delete tmp_save;
+			}
+			return tmp;
+		}
 	}
 	else
 		throw std::runtime_error("ERROR!!! Matrix operator^");
@@ -240,4 +254,114 @@ Value* Matrix::matrix_miltiple(const Value *rhs) const
 	}
 	else
 		throw std::runtime_error("ERROR!!! Matrix matrix_miltiple");
+}
+
+//ctrl+c -> ctrl+v from project enter_the_matrix
+double	Matrix::ft_abs_double(const double &tmp) const { return tmp < 0 ? -1 * tmp : tmp; }
+
+Matrix	Matrix::upper_triangular_matrix_change_znak_when_swap_row(Matrix tmp) const
+{
+	for (int r = 0, c = 0; r < _row && c < _col; c++) //make upper triangular matrix
+	{
+		if (ft_abs_double(tmp._mat[r * _col + c]) < EPS)
+			for (int i = r + 1; i < _row; i++)			//check and change row
+				if (ft_abs_double(tmp._mat[i * _col + c]) > ft_abs_double(tmp._mat[r * _col + c]))
+				{
+					for (int j = 0; j < _col; j++)
+					{
+						double	ttt = tmp._mat[r * _col + j];
+						tmp._mat[r * _col + j] = tmp._mat[i * _col + j];
+						tmp._mat[i * _col + j] = -ttt;
+					}
+					break;
+				}
+		if (ft_abs_double(tmp._mat[r * _col + c]) > EPS)
+		{
+			
+			for (int i = r + 1; i < _row; i++)			//make rows zero
+			{
+				double	scale_tmp = tmp._mat[i * _col + c] / tmp._mat[r * _col + c];
+				for (int j = 0; j < _col; j++)
+					tmp._mat[i * _col + j] -= scale_tmp * tmp._mat[r * _col + j];
+			}
+			r++;
+		}
+	}
+	return tmp;
+}
+
+double	Matrix::determinant() const
+{
+	if (!is_square())
+		throw std::length_error("THROW MATRIX determinant: !is_square");
+	if (_row == 0 || _col == 0 )
+		throw std::length_error("THROW MATRIX determinant: An empty matrix cannot have a determinant");
+
+	Matrix	tmp(upper_triangular_matrix_change_znak_when_swap_row(*this));
+	double			det = 1;
+
+	for (int i = 0; i < _row; i++)
+		det *= tmp._mat[i * _col + i];
+	return det;
+}
+
+bool	Matrix::is_square() const { return (getRow() == getCol()); }
+
+Matrix	Matrix::transpose() const
+{
+	Matrix	tmp(_col, _row);
+	for (int r = 0; r < _row; r++)
+		for (int c = 0; c < _col; c++)
+			tmp._mat[c * _row + r] = _mat[r * _col + c];
+	return tmp;
+}
+
+Matrix	 Matrix::cofactor_matrix_T(void) const
+{
+	Matrix com(_row, _col);
+	for (int i = 0; i < _row * _col; i++)
+		std::cout << com._mat[i] << " ";
+	std::cout << std::endl;
+	for (int r = 0; r < _row; r++) 
+	{
+		for (int c = 0; c < _col; c++) 
+		{
+			Matrix tmp(*this);
+			for (int k = 0; k < this->_row; k++) 
+			{
+				if (k != r)
+					tmp._mat[k * _col + c] = 0;
+				else
+					tmp._mat[k * _col + c] = 1;
+			}
+			com._mat[r * _col + c] = tmp.determinant();
+			std::cout << "\t" << r << "\t" << c << "\t" << tmp.determinant() << std::endl;
+		}
+	}	
+	for (int i = 0; i < _row * _col; i++)
+		std::cout << com._mat[i] << " ";
+	std::cout << std::endl;
+	return com.transpose();
+}
+
+Matrix	&Matrix::scl(const double &a)
+{
+	for (int i = 0; i < _row * _col; i++)
+		_mat[i] = _mat[i] * a;
+	return *this;
+}
+
+Matrix	 Matrix::inverse() const
+{
+	if (!is_square())
+		throw std::length_error("THROW MATRIX inverse: !is_square");
+	double det = determinant();
+	std::cout << "1det" << det << std::endl;
+	if (det == 0)
+		throw std::length_error("THROW MATRIX inverse: det == 0");
+	Matrix com = cofactor_matrix_T().scl(1 / det);
+	for (int i = 0; i < _row * _col; i++)
+		std::cout << com._mat[i] << " ";
+	std::cout << std::endl;
+	return com;
 }

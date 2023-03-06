@@ -214,21 +214,31 @@ Value* Rational::operator%(const Value *rhs) const
 Value* Rational::operator^(const Value *rhs) const
 {
 	std::cout << "Rational *operator^" << std::endl;
-
-	print();
-	rhs->print();
-
 	if (rhs->GetType() == value_type::RATIONAL)
 	{
 		double tmp = 1;
 		const Rational	*tmp_rat = static_cast<const Rational*>(rhs);
-		if (tmp_rat->getReal() < 0)
-			throw std::runtime_error("COMPUTATION ERROR! Rational *operator^ : pow < 0");
 		if (tmp_rat->getReal() != static_cast<int>(tmp_rat->getReal()))
-			throw std::runtime_error("COMPUTATION ERROR! Rational *operator^ : pow is not int");
-		for (int i = tmp_rat->getReal(); i > 0; i--)
-			tmp *= _real;
-		return(new Rational(tmp));
+		{
+			Value *tmp_ln = ft_ln(this);
+			Value *tmp_xy = tmp_rat->operator*(tmp_ln);
+			delete tmp_ln;
+			Value *tmp_exp = ft_exp(tmp_xy);
+			delete tmp_xy;
+			return	tmp_exp;
+		}
+		else if (tmp_rat->getReal() < 0)
+		{
+			for (int i = tmp_rat->getReal(); i < 0; i++)
+				tmp *= _real;
+			return(new Rational(1/tmp));
+		}
+		else
+		{
+			for (int i = tmp_rat->getReal(); i > 0; i--)
+				tmp *= _real;
+			return(new Rational(tmp));
+		}
 	}
 	else if (rhs->GetType() == value_type::FUNCTION)
 	{

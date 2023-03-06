@@ -4,7 +4,7 @@
 
 #define PI		3.14159265358979323846
 #define M_LN2	0.69314718055994530942
-#define EPS		0.000001
+#define EPS		0.0000001
 
 double			_ft_sqrt_rat(double x);
 

@@ -17,8 +17,6 @@ private:
 	std::list<History>				_history;
 	std::map<std::string, Value*>	_value_map;
 
-
-
 	Value			*_new_MATRIX(Lexer const &lex);
 	Value			*_new_RAT_COM_MAT(Lexer const &lex);
 	Value			*_new_SOLVE(Lexer const &lex);
@@ -34,6 +32,7 @@ private:
 	void			_print_help() const;
 	void			_change_mod();
 	void			_make_test() const;
+	void			_make_draw() const;
 
 public:
 	Computor_v2();
