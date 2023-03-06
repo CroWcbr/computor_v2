@@ -9,8 +9,9 @@ This project is the first of a serie to renew your relationship to mathematics, 
 - show - display variables
 - history - display log
 - help - show this
-- change_mod - radians on/off =)
+- change_mod - radians on/off
 - test - start test
+- draw - draw the curve (need to read about SFML)
 
 ## BONUS:
 - Added usual functions:
@@ -25,8 +26,25 @@ This project is the first of a serie to renew your relationship to mathematics, 
 - Display of the list of stored variables and their values
 - History of commands with results
 - An extension of the matrix computation applied to the vector computation
+- Matrix inversion (matrix ^ (-1))
 
-## not done yet
-- Function curve display
-- Matrix inversion
-- make more operation with different type
+## table type
+|               |    Rational   |    Complex    |    Matrix     |    Function   |
+| :-----------: | :-----------: | :-----------: | :-----------: | :-----------: |
+| Rational +    |       ✅      |       ✅     |       no      |      ✅      |
+| Rational -    |       ✅      |       ✅     |       no      |      ✅      |
+| Rational *    |       ✅      |       ✅     |       ✅      |      ✅      |
+| Rational /    |       ✅      |       ✅     |       no      |      ✅      |
+| Rational %    |       ✅      |       no     |       no      |      ✅       |
+| Rational ^    |       ✅      |       no     |       no      |      ✅       |
+| Rational **   |       no       |       no     |       no      |       no      |
+| Complex +     |       ✅      |       ✅     |       no      |      ✅      |
+| Complex -     |       ✅      |       ✅     |       no      |      ✅      |
+| Complex *     |       ✅      |       ✅     |       no      |      ✅      |
+| Complex /     |       ✅      |       ✅     |       no      |      ✅      |
+| Complex %     |       no       |       no     |       no      |      no       |
+| Complex ^     |       ✅      |       no     |       no      |      ✅       |
+| Complex **    |       no       |       no     |       no      |       no      |
+
+
+
