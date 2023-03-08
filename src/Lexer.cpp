@@ -7,7 +7,8 @@ Lexer::Lexer(std::string const &input, std::map<std::string, Value*> const &val)
 	if (_type != lexer_type::COMMAND)
 		_tokenization(input_to_vector);
 
-	_print_check_token();
+	if (is_debug)
+		_print_check_token();
 
 	if (_type == lexer_type::MATRIX)
 		_check_matrix();
@@ -15,7 +16,9 @@ Lexer::Lexer(std::string const &input, std::map<std::string, Value*> const &val)
 		_check_command();
 	else
 		_check_expr();
-	print();
+
+	if (is_debug)
+		print();
 }
 
 Lexer::~Lexer() {}
@@ -30,6 +33,7 @@ void Lexer::_print_check_token() const
 	std::vector<std::string>	value_type_print = \
 		{"RATIONAL", "COMPLEX", \
 		"MATRIX", "FUNCTION"};
+	std::cout << "Parsing:" << std::endl;
 	for (size_t i = 0; i < _expr.size(); i++)
 	{
 		std::cout << "\t" << i << "\t" << _expr[i].getLexem() << "\t" << lexer_type_print[(int)_expr[i].getType()] << "\t";
@@ -175,7 +179,7 @@ std::vector<std::string> Lexer::_split_input(std::string const &input) const
 }
 
 std::string Lexer::_separate_digit_and_alpha(std::string const &input) const
-{	// 2x -> 2 *x && x2 -> x * 2
+{
 	std::string tmp = input;
 	for(size_t i = 0; i < tmp.size() - 1; i++)
 		if ((isdigit(tmp[i]) && isalpha(tmp[i + 1])) || \
@@ -300,7 +304,6 @@ void Lexer::_tokenization(std::vector<std::string> const &input_to_vector)
 
 bool  Lexer::_check_solve() const
 {
-	std::cout << "_check_solve" << std::endl;
 	int i = _expr.size() - 1;
 	std::string check_unknown = _expr[i].getLexem();
 	for (; i > 0; i--)
@@ -386,7 +389,8 @@ void  Lexer::_check_command() const
 			_var_name != "history" && \
 			_var_name != "change_mod" && \
 			_var_name != "test" && \
-			_var_name != "draw")
+			_var_name != "draw" && \
+			_var_name != "debug")
 		throw std::runtime_error("PARSE ERROR! unknown command");
 }
 

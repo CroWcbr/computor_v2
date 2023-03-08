@@ -106,6 +106,8 @@ void Computor_v2::_make_command(Lexer const &lex)
 		_make_test();
 	else if (lex.getVarName() == "draw")
 		_make_draw();
+	else if (lex.getVarName() == "debug")
+		_debug_mod();
 	else
 		throw std::runtime_error("!!!! Unknown command");
 }
@@ -155,6 +157,8 @@ void Computor_v2::_print_help() const
 	std::cout << "\thelp\t\t - show this" << std::endl;
 	std::cout << "\tchange_mod\t - radians on/off =)" << std::endl;
 	std::cout << "\ttest\t\t - start test" << std::endl;
+	std::cout << "\tdraw\t\t - draw f(x)" << std::endl;
+	std::cout << "\tdebug\t\t - debug mode" << std::endl;
 	std::cout << "BONUS:" << std::endl;
 	// std::cout << "\t#Function curve display" << std::endl;
 	std::cout << "\t#Added usual functions:" << std::endl;
@@ -175,6 +179,15 @@ void Computor_v2::_print_help() const
 void Computor_v2::_change_mod()
 {
 	is_radian = is_radian == false ? true : false;
+}
+
+void Computor_v2::_debug_mod()
+{
+	is_debug = is_debug == false ? true : false;
+	if (is_debug)
+		std::cout << "debug mode ON" << std::endl;
+	else
+		std::cout << "debug mode OFF" << std::endl;
 }
 
 void Computor_v2::_make_test() const
@@ -228,7 +241,7 @@ void Computor_v2::_make_draw() const
 	tmp_token.push_back(Token("0", token_type::DIGIT));
 	tmp_token.push_back(Token(")", token_type::BRACET));
 
-	for (int i = -100 ; i <= 100; i++)
+	for (int i = -500 ; i <= 500; i++)
 	{
 		tmp_token[2] = Token(std::to_string(i), token_type::DIGIT);
 		Computation		result(tmp_token, _value_map);
@@ -238,5 +251,5 @@ void Computor_v2::_make_draw() const
 	}
 	for(size_t i = 0; i < x.size(); i++)
 		std::cout << x[i] << "\t" << y[i] << std::endl;
-	draw();
+	draw(x, y);
 }

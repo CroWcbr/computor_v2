@@ -57,7 +57,8 @@ Value* Complex::clone() const {	return new Complex(_real, _imag); }
 
 Value* Complex::operator+(const Value *rhs) const
 {
-	std::cout << "Complex *operator+" << std::endl;
+	if (is_debug)
+		std::cout << "Complex *operator+" << std::endl;
 	double real;
 	double image;
 	if (rhs->GetType() == value_type::RATIONAL)
@@ -86,7 +87,8 @@ Value* Complex::operator+(const Value *rhs) const
 
 Value* Complex::operator-(const Value *rhs) const
 {
-	std::cout << "Complex *operator-" << std::endl;
+	if (is_debug)
+		std::cout << "Complex *operator-" << std::endl;
 	double real;
 	double image;
 	if (rhs->GetType() == value_type::RATIONAL)
@@ -103,21 +105,14 @@ Value* Complex::operator-(const Value *rhs) const
 	}
 	else if (rhs->GetType() == value_type::FUNCTION)
 	{
-		std::cout << " !!!!!!!!!!!!!!!!!!!! " << std::endl;
 		const Function	*tmp_fun = static_cast<const Function*>(rhs);
 		Rational	*tmp_rat_minus = new Rational(-1);
-		std::cout << "new Rational(-1) "<<std::endl;
-		tmp_rat_minus->print();
 		Value		*tmp_val_minus = NULL;
 		Value		*tmp_val = NULL;
 		try
 		{
 			tmp_val_minus = *tmp_fun * tmp_rat_minus;
-			std::cout << "tmp_val_minus "<<std::endl;
-			tmp_val_minus->print();
 			tmp_val = *tmp_val_minus + this;
-			std::cout << "tmp_val "<<std::endl;
-			tmp_val->print();
 			delete tmp_rat_minus;	
 			delete tmp_val_minus;
 		}
@@ -127,8 +122,6 @@ Value* Complex::operator-(const Value *rhs) const
 			delete tmp_val_minus;
 			throw std::runtime_error(e.what());
 		}
-		std::cout << "tmp_val2 "<<std::endl;
-		tmp_val->print();
 		return tmp_val;
 	}
 	else
@@ -140,7 +133,8 @@ Value* Complex::operator-(const Value *rhs) const
 
 Value* Complex::operator*(const Value *rhs) const
 {
-	std::cout << "Complex *operator*" << std::endl;
+	if (is_debug)
+		std::cout << "Complex *operator*" << std::endl;
 	double real;
 	double image;
 	if (rhs->GetType() == value_type::RATIONAL)
@@ -169,7 +163,8 @@ Value* Complex::operator*(const Value *rhs) const
 
 Value* Complex::operator/(const Value *rhs) const
 {
-	std::cout << "Complex *operator/" << std::endl;
+	if (is_debug)
+		std::cout << "Complex *operator/" << std::endl;
 	double real;
 	double image;
 	if (rhs->GetType() == value_type::RATIONAL)
@@ -194,8 +189,6 @@ Value* Complex::operator/(const Value *rhs) const
 		std::map<int, double> tmp_map;
 		tmp_map[0] = 1;
 		Function	*new_func = new Function(tmp_fun->getUnknown(), tmp_map);
-		std::cout << "new_func" << std::endl;
-		new_func->print();
 		Value		*tmp_val = NULL;
 		Value		*tmp = NULL;
 		try
@@ -224,13 +217,15 @@ Value* Complex::operator/(const Value *rhs) const
 Value* Complex::operator%(const Value *rhs) const
 {
 	(void)rhs;
-	std::cout << "Complex *operator%" << std::endl;
+	if (is_debug)
+		std::cout << "Complex *operator%" << std::endl;
 	throw std::runtime_error("COMPUTATION ERROR! Complex *operator%");
 }
 
 Value* Complex::operator^(const Value *rhs) const
 {
-	std::cout << "Complex *operator^" << std::endl;
+	if (is_debug)
+		std::cout << "Complex *operator^" << std::endl;
 	double real = _real;
 	double image = _imag;
 	if (rhs->GetType() == value_type::RATIONAL)
@@ -254,8 +249,6 @@ Value* Complex::operator^(const Value *rhs) const
 		std::map<int, double> tmp_map;
 		tmp_map[0] = 1;
 		Function	*new_func = new Function(tmp_fun->getUnknown(), tmp_map);
-		std::cout << "new_func" << std::endl;
-		new_func->print();
 		Value		*tmp_val = NULL;
 		Value		*tmp = NULL;
 		try
@@ -272,8 +265,6 @@ Value* Complex::operator^(const Value *rhs) const
 			delete tmp;
 			throw std::runtime_error(e.what());
 		}
-		std::cout << "tmp_val" << std::endl;
-		tmp_val->print();
 		return tmp_val;
 	}
 	else
@@ -286,6 +277,7 @@ Value* Complex::operator^(const Value *rhs) const
 Value* Complex::matrix_miltiple(const Value *rhs) const
 {
 	(void)rhs;
-	std::cout << "Complex *matrix_miltiple" << std::endl;
+	if (is_debug)
+		std::cout << "Complex *matrix_miltiple" << std::endl;
 	throw std::runtime_error("COMPUTATION ERROR! Complex *matrix_miltiple");
 }

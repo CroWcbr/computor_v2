@@ -1,9 +1,10 @@
 #include "../include/main_library.hpp"
 
 static Computor_v2	comp;
-bool is_radian = false;
+bool	is_radian = false;
+bool	is_debug = false;
 
-void _signal_handler(int signal)
+void	_signal_handler(int signal)
 {
 	{
 		std::string msg = "\rSTOP SIGNAL";

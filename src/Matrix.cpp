@@ -100,7 +100,8 @@ bool Matrix::getSimple() const { return false; }
 
 Value* Matrix::operator+(const Value *rhs) const
 {
-	std::cout << "Matrix *operator+" << std::endl;
+	if (is_debug)
+		std::cout << "Matrix *operator+" << std::endl;
 	if (rhs->GetType() == value_type::MATRIX)
 	{
 		const Matrix	*tmp_mat = static_cast<const Matrix*>(rhs);
@@ -117,7 +118,8 @@ Value* Matrix::operator+(const Value *rhs) const
 
 Value* Matrix::operator-(const Value *rhs) const
 {
-	std::cout << "Matrix *operator-" << std::endl;
+	if (is_debug)
+		std::cout << "Matrix *operator-" << std::endl;
 	if (rhs->GetType() == value_type::MATRIX)
 	{
 		const Matrix	*tmp_mat = static_cast<const Matrix*>(rhs);
@@ -134,7 +136,8 @@ Value* Matrix::operator-(const Value *rhs) const
 
 Value* Matrix::operator*(const Value *rhs) const
 {
-	std::cout << "Matrix *operator*" << std::endl;
+	if (is_debug)
+		std::cout << "Matrix *operator*" << std::endl;
 	if (rhs->GetType() == value_type::RATIONAL)
 	{
 		const Rational	*tmp_rat = static_cast<const Rational*>(rhs);
@@ -160,7 +163,8 @@ Value* Matrix::operator*(const Value *rhs) const
 
 Value* Matrix::operator/(const Value *rhs) const
 {
-	std::cout << "Matrix *operator/" << std::endl;
+	if (is_debug)
+		std::cout << "Matrix *operator/" << std::endl;
 	if (rhs->GetType() == value_type::RATIONAL)
 	{
 		const Rational	*tmp_rat = static_cast<const Rational*>(rhs);
@@ -172,23 +176,6 @@ Value* Matrix::operator/(const Value *rhs) const
 			tmp->_mat[i] /= rat;
 		return (tmp);
 	}
-	// else if (rhs->GetType() == value_type::MATRIX)
-	// {
-	// 	const Matrix	*tmp_mat = static_cast<const Matrix*>(rhs);
-	// 	if (_row != tmp_mat->getRow() && _col != tmp_mat->getCol())
-	// 		throw(std::runtime_error("COMPUTATION ERROR! Matrix *operator/ : different size"));
-	// 	Matrix *tmp = new Matrix(*this);
-	// 	for (int i = 0, len = _mat.size(); i < len; ++i)
-	// 	{
-	// 		if (tmp_mat->getMat()[i] == 0)
-	// 		{
-	// 			delete tmp;
-	// 			throw std::runtime_error("COMPUTATION ERROR! Matrix *operator/ : zero division");
-	// 		}
-	// 		tmp->_mat[i] /= tmp_mat->getMat()[i];
-	// 	}
-	// 	return (tmp);
-	// }
 	else
 		throw std::runtime_error("COMPUTATION ERROR! Matrix *operator/");
 }
@@ -196,13 +183,15 @@ Value* Matrix::operator/(const Value *rhs) const
 Value* Matrix::operator%(const Value *rhs) const
 {
 	(void)rhs;
-	std::cout << "Matrix *operator%" << std::endl;
+	if (is_debug)
+		std::cout << "Matrix *operator%" << std::endl;
 	throw std::runtime_error("COMPUTATION ERROR! Matrix *operator%");
 }
 
 Value* Matrix::operator^(const Value *rhs) const
 {
-	std::cout << "Matrix *operator^" << std::endl;
+	if (is_debug)
+		std::cout << "Matrix *operator^" << std::endl;
 	if (rhs->GetType() == value_type::RATIONAL)
 	{
 		const Rational	*tmp_rat = static_cast<const Rational*>(rhs);
@@ -239,7 +228,8 @@ Value* Matrix::operator^(const Value *rhs) const
 
 Value* Matrix::matrix_miltiple(const Value *rhs) const
 {
-	std::cout << "Matrix *matrix_miltiple" << std::endl;
+	if (is_debug)
+		std::cout << "Matrix *matrix_miltiple" << std::endl;
 	if (rhs->GetType() == value_type::MATRIX)
 	{
 		const Matrix	*tmp_mat = static_cast<const Matrix*>(rhs);
@@ -319,9 +309,6 @@ Matrix	Matrix::transpose() const
 Matrix	 Matrix::cofactor_matrix_T(void) const
 {
 	Matrix com(_row, _col);
-	for (int i = 0; i < _row * _col; i++)
-		std::cout << com._mat[i] << " ";
-	std::cout << std::endl;
 	for (int r = 0; r < _row; r++) 
 	{
 		for (int c = 0; c < _col; c++) 
@@ -335,12 +322,8 @@ Matrix	 Matrix::cofactor_matrix_T(void) const
 					tmp._mat[k * _col + c] = 1;
 			}
 			com._mat[r * _col + c] = tmp.determinant();
-			std::cout << "\t" << r << "\t" << c << "\t" << tmp.determinant() << std::endl;
 		}
 	}	
-	for (int i = 0; i < _row * _col; i++)
-		std::cout << com._mat[i] << " ";
-	std::cout << std::endl;
 	return com.transpose();
 }
 
@@ -356,12 +339,8 @@ Matrix	 Matrix::inverse() const
 	if (!is_square())
 		throw std::length_error("THROW MATRIX inverse: !is_square");
 	double det = determinant();
-	std::cout << "1det" << det << std::endl;
 	if (det == 0)
 		throw std::length_error("THROW MATRIX inverse: det == 0");
 	Matrix com = cofactor_matrix_T().scl(1 / det);
-	for (int i = 0; i < _row * _col; i++)
-		std::cout << com._mat[i] << " ";
-	std::cout << std::endl;
 	return com;
 }

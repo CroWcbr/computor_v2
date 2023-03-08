@@ -37,7 +37,8 @@ bool Rational::getSimple() const { return true; }
 
 Value* Rational::operator+(const Value *rhs) const
 {
-	std::cout << "Rational *operator+" << std::endl;
+	if (is_debug)
+		std::cout << "Rational *operator+" << std::endl;
 	if (rhs->GetType() == value_type::RATIONAL)
 	{
 		const Rational	*tmp_rat = static_cast<const Rational*>(rhs);
@@ -59,7 +60,8 @@ Value* Rational::operator+(const Value *rhs) const
 
 Value* Rational::operator-(const Value *rhs) const
 {
-	std::cout << "Rational *operator-" << std::endl;
+	if (is_debug)
+		std::cout << "Rational *operator-" << std::endl;
 	if (rhs->GetType() == value_type::RATIONAL)
 	{
 		const Rational	*tmp_rat = static_cast<const Rational*>(rhs);
@@ -72,21 +74,14 @@ Value* Rational::operator-(const Value *rhs) const
 	}
 	else if (rhs->GetType() == value_type::FUNCTION)
 	{
-		std::cout << " !!!!!!!!!!!!!!!!!!!! " << std::endl;
 		const Function	*tmp_fun = static_cast<const Function*>(rhs);
 		Rational	*tmp_rat_minus = new Rational(-1);
-		std::cout << "new Rational(-1) "<<std::endl;
-		tmp_rat_minus->print();
 		Value		*tmp_val_minus = NULL;
 		Value		*tmp_val = NULL;
 		try
 		{
 			tmp_val_minus = *tmp_fun * tmp_rat_minus;
-			std::cout << "tmp_val_minus "<<std::endl;
-			tmp_val_minus->print();
 			tmp_val = *tmp_val_minus + this;
-			std::cout << "tmp_val "<<std::endl;
-			tmp_val->print();
 			delete tmp_rat_minus;	
 			delete tmp_val_minus;
 		}
@@ -96,8 +91,6 @@ Value* Rational::operator-(const Value *rhs) const
 			delete tmp_val_minus;
 			throw std::runtime_error(e.what());
 		}
-		std::cout << "tmp_val2 "<<std::endl;
-		tmp_val->print();
 		return tmp_val;
 	}
 	else
@@ -106,7 +99,8 @@ Value* Rational::operator-(const Value *rhs) const
 
 Value* Rational::operator*(const Value *rhs) const
 {
-	std::cout << "Rational *operator*" << std::endl;
+	if (is_debug)
+		std::cout << "Rational *operator*" << std::endl;
 	if (rhs->GetType() == value_type::RATIONAL)
 	{
 		const Rational	*tmp_rat = static_cast<const Rational*>(rhs);
@@ -133,7 +127,8 @@ Value* Rational::operator*(const Value *rhs) const
 
 Value* Rational::operator/(const Value *rhs) const
 {
-	std::cout << "Rational *operator/" << std::endl;
+	if (is_debug)
+		std::cout << "Rational *operator/" << std::endl;
 	if (rhs->GetType() == value_type::RATIONAL)
 	{
 		const Rational	*tmp_rat = static_cast<const Rational*>(rhs);
@@ -158,8 +153,6 @@ Value* Rational::operator/(const Value *rhs) const
 		std::map<int, double> tmp_map;
 		tmp_map[0] = _real;
 		Function	*new_func = new Function(tmp_fun->getUnknown(), tmp_map);
-		std::cout << "new_func" << std::endl;
-		new_func->print();
 		Value		*tmp_val = NULL;
 		try
 		{
@@ -179,7 +172,8 @@ Value* Rational::operator/(const Value *rhs) const
 
 Value* Rational::operator%(const Value *rhs) const
 {
-	std::cout << "Rational *operator%" << std::endl;
+	if (is_debug)
+		std::cout << "Rational *operator%" << std::endl;
 	if (rhs->GetType() == value_type::RATIONAL)
 	{
 		const Rational	*tmp_rat = static_cast<const Rational*>(rhs);
@@ -193,8 +187,6 @@ Value* Rational::operator%(const Value *rhs) const
 		std::map<int, double> tmp_map;
 		tmp_map[0] = _real;
 		Function	*new_func = new Function(tmp_fun->getUnknown(), tmp_map);
-		std::cout << "new_func" << std::endl;
-		new_func->print();
 		Value		*tmp_val = NULL;
 		try
 		{
@@ -213,7 +205,8 @@ Value* Rational::operator%(const Value *rhs) const
 
 Value* Rational::operator^(const Value *rhs) const
 {
-	std::cout << "Rational *operator^" << std::endl;
+	if (is_debug)
+		std::cout << "Rational *operator^" << std::endl;
 	if (rhs->GetType() == value_type::RATIONAL)
 	{
 		double tmp = 1;
@@ -246,8 +239,6 @@ Value* Rational::operator^(const Value *rhs) const
 		std::map<int, double> tmp_map;
 		tmp_map[0] = _real;
 		Function	*new_func = new Function(tmp_fun->getUnknown(), tmp_map);
-		std::cout << "new_func" << std::endl;
-		new_func->print();
 		Value		*tmp_val = NULL;
 		try
 		{
@@ -259,8 +250,6 @@ Value* Rational::operator^(const Value *rhs) const
 			delete new_func;	
 			throw std::runtime_error(e.what());
 		}
-		std::cout << "tmp_val" << std::endl;
-		tmp_val->print();
 		return tmp_val;
 	}
 	else
@@ -270,6 +259,7 @@ Value* Rational::operator^(const Value *rhs) const
 Value* Rational::matrix_miltiple(const Value *rhs) const
 {
 	(void)rhs;
-	std::cout << "Rational *matrix_miltiple" << std::endl;
+	if (is_debug)
+		std::cout << "Rational *matrix_miltiple" << std::endl;
 	throw std::runtime_error("COMPUTATION ERROR! Rational *matrix_miltiple");
 }

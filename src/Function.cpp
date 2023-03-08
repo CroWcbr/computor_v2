@@ -89,9 +89,12 @@ bool Function::getSimple() const { return _simple; }
 void Function::print() const
 {	
 	std::cout << "\t" << to_string() << std::endl;
-	std::cout << "\t_simple :" << _simple << std::endl;
-	for (auto &m : _map)
-		std::cout << "\t" << m.first << " : " << m.second << std::endl;
+	if (is_debug)
+	{
+		std::cout << "\t_simple :" << _simple << std::endl;
+		for (auto &m : _map)
+			std::cout << "\t" << m.first << " : " << m.second << std::endl;
+	}
 }
 
 std::string Function::to_string() const 
@@ -108,7 +111,8 @@ std::vector<Token> Function::to_token() const { return _func; }
 
 Value* Function::operator+(const Value *rhs) const
 {
-	std::cout << "Function *operator+" << std::endl;
+	if (is_debug)
+		std::cout << "Function *operator+" << std::endl;
 	if (getSimple() == true && \
 		rhs->getSimple() == true && \
 		(rhs->GetType() == value_type::RATIONAL || \
@@ -151,7 +155,8 @@ Value* Function::operator+(const Value *rhs) const
 
 Value* Function::operator-(const Value *rhs) const
 {
-	std::cout << "Function *operator-" << std::endl;
+	if (is_debug)
+		std::cout << "Function *operator-" << std::endl;
 	if (getSimple() == true && \
 		rhs->getSimple() == true && \
 		(rhs->GetType() == value_type::RATIONAL || \
@@ -195,7 +200,8 @@ Value* Function::operator-(const Value *rhs) const
 
 Value* Function::operator*(const Value *rhs) const
 {
-	std::cout << "Function *operator*" << std::endl;
+	if (is_debug)
+		std::cout << "Function *operator*" << std::endl;
 	if (getSimple() == true && \
 		rhs->getSimple() == true && \
 		(rhs->GetType() == value_type::RATIONAL || \
@@ -245,7 +251,8 @@ Value* Function::operator*(const Value *rhs) const
 
 Value* Function::operator/(const Value *rhs) const
 {
-	std::cout << "Function *operator/" << std::endl;
+	if (is_debug)
+		std::cout << "Function *operator/" << std::endl;
 	if (getSimple() == true && \
 		rhs->getSimple() == true && \
 			(rhs->GetType() == value_type::RATIONAL || \
@@ -291,7 +298,8 @@ Value* Function::operator/(const Value *rhs) const
 
 Value* Function::operator%(const Value *rhs) const
 {
-	std::cout << "Function *operator%" << std::endl;
+	if (is_debug)
+		std::cout << "Function *operator%" << std::endl;
 	if (getSimple() == true && \
 		rhs->getSimple() == true && \
 			(rhs->GetType() == value_type::RATIONAL || \
@@ -337,7 +345,8 @@ Value* Function::operator%(const Value *rhs) const
 
 Value* Function::operator^(const Value *rhs) const
 {
-	std::cout << "Function *operator^" << std::endl;
+	if (is_debug)
+		std::cout << "Function *operator^" << std::endl;
 	if (getSimple() == true && \
 		rhs->getSimple() == true && \
 			(rhs->GetType() == value_type::RATIONAL || \
@@ -355,9 +364,9 @@ Value* Function::operator^(const Value *rhs) const
 		
 		double pow = tmp_second[0];
 		if (pow < 0)
-			throw std::runtime_error("COMPUTATION ERROR! Matrix *operator^ : pow < 0");
+			throw std::runtime_error("COMPUTATION ERROR! Function *operator^ : pow < 0");
 		if (pow != static_cast<int>(pow))
-			throw std::runtime_error("COMPUTATION ERROR! Matrix *operator^ : pow is not int");
+			throw std::runtime_error("COMPUTATION ERROR! Function *operator^ : pow is not int");
 
 		if (pow == 0)
 			return new Rational(1);
@@ -393,6 +402,7 @@ Value* Function::operator^(const Value *rhs) const
 Value* Function::matrix_miltiple(const Value *rhs) const
 {
 	(void)rhs;
-	std::cout << "Function *matrix_miltiple" << std::endl;
+	if (is_debug)
+		std::cout << "Function *matrix_miltiple" << std::endl;
 	throw std::runtime_error("COMPUTATION ERROR! Function *matrix_miltiple");
 }

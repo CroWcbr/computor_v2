@@ -27,6 +27,7 @@
 
 #include <SFML/Graphics.hpp>
 
-void draw();
+void draw(std::vector<double> &x, std::vector<double> &y);
 
 extern bool is_radian;
+extern bool is_debug;

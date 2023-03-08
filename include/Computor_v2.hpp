@@ -33,6 +33,7 @@ private:
 	void			_change_mod();
 	void			_make_test() const;
 	void			_make_draw() const;
+	void			_debug_mod();
 
 public:
 	Computor_v2();
