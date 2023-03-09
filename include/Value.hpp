@@ -1,6 +1,9 @@
 #pragma once
 
 # include "main_library.hpp"
+# include <vector>
+# include <string>
+# include "enum.hpp"
 
 class Value
 {

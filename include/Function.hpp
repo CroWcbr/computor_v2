@@ -1,10 +1,13 @@
 #pragma once
 
 # include "main_library.hpp"
+# include <vector>
+# include <map>
+# include <string>
 
 class Token;
 class Value;
-
+class Lexer;
 
 class Function: public Value
 {

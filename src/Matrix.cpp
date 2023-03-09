@@ -251,10 +251,10 @@ double	Matrix::ft_abs_double(const double &tmp) const { return tmp < 0 ? -1 * tm
 
 Matrix	Matrix::upper_triangular_matrix_change_znak_when_swap_row(Matrix tmp) const
 {
-	for (int r = 0, c = 0; r < _row && c < _col; c++) //make upper triangular matrix
+	for (int r = 0, c = 0; r < _row && c < _col; c++)
 	{
 		if (ft_abs_double(tmp._mat[r * _col + c]) < EPS)
-			for (int i = r + 1; i < _row; i++)			//check and change row
+			for (int i = r + 1; i < _row; i++)
 				if (ft_abs_double(tmp._mat[i * _col + c]) > ft_abs_double(tmp._mat[r * _col + c]))
 				{
 					for (int j = 0; j < _col; j++)
@@ -268,7 +268,7 @@ Matrix	Matrix::upper_triangular_matrix_change_znak_when_swap_row(Matrix tmp) con
 		if (ft_abs_double(tmp._mat[r * _col + c]) > EPS)
 		{
 			
-			for (int i = r + 1; i < _row; i++)			//make rows zero
+			for (int i = r + 1; i < _row; i++)
 			{
 				double	scale_tmp = tmp._mat[i * _col + c] / tmp._mat[r * _col + c];
 				for (int j = 0; j < _col; j++)

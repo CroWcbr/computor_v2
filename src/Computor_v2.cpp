@@ -124,13 +124,8 @@ void Computor_v2::_print_value_map() const
 	std::cout << "VALUE_MAP : " << _value_map.size() << std::endl;
 	for (auto &symbol : _value_map)
 	{
-		std::cout << "  " << symbol.second->GetName() << std::endl;
 		std::cout << "  " << symbol.first << " : " << value_type_print[(int)symbol.second->GetType()] << std::endl;
 		symbol.second->print();
-		// for (auto &s : symbol.second->to_token())
-		// {
-		// 	std::cout << s.getLexem() << " : " << (int)s.getType() << " : " << s.getRang() << std::endl;
-		// }
 	}
 	std::cout << "\033[0m";
 }
@@ -157,10 +152,10 @@ void Computor_v2::_print_help() const
 	std::cout << "\thelp\t\t - show this" << std::endl;
 	std::cout << "\tchange_mod\t - radians on/off =)" << std::endl;
 	std::cout << "\ttest\t\t - start test" << std::endl;
-	std::cout << "\tdraw\t\t - draw f(x)" << std::endl;
+	std::cout << "\tdraw\t\t - draw and then function" << std::endl;
 	std::cout << "\tdebug\t\t - debug mode" << std::endl;
 	std::cout << "BONUS:" << std::endl;
-	// std::cout << "\t#Function curve display" << std::endl;
+	std::cout << "\t#Function curve display : draw -> function" << std::endl;
 	std::cout << "\t#Added usual functions:" << std::endl;
 	std::cout << "\t\t- exponential" << std::endl;
 	std::cout << "\t\t- square root" << std::endl;
@@ -172,13 +167,17 @@ void Computor_v2::_print_help() const
 	std::cout << "\t#Norm computation" << std::endl;
 	std::cout << "\t#Display of the list of stored variables and their values" << std::endl;
 	std::cout << "\t#History of commands with results" << std::endl;
-	// std::cout << "\t#Matrix inversion" << std::endl;
+	std::cout << "\t#Matrix inversion (^(-1))" << std::endl;
 	std::cout << "\t#An extension of the matrix computation applied to the vector computation" << std::endl;
 }
 
 void Computor_v2::_change_mod()
 {
 	is_radian = is_radian == false ? true : false;
+	if (is_debug)
+		std::cout << "is_radian mode ON" << std::endl;
+	else
+		std::cout << "is_degree mode ON" << std::endl;
 }
 
 void Computor_v2::_debug_mod()
@@ -241,14 +240,23 @@ void Computor_v2::_make_draw() const
 	tmp_token.push_back(Token("0", token_type::DIGIT));
 	tmp_token.push_back(Token(")", token_type::BRACET));
 
-	for (int i = -500 ; i <= 500; i++)
+	try
 	{
-		tmp_token[2] = Token(std::to_string(i), token_type::DIGIT);
-		Computation		result(tmp_token, _value_map);
-		const Rational	*rmp_rat = static_cast<const Rational*>(result.getValue());
-		x.push_back(i);
-		y.push_back(rmp_rat->getReal());
+		for (int i = -500 ; i <= 500; i++)
+		{
+			tmp_token[2] = Token(std::to_string(i), token_type::DIGIT);
+			Computation		result(tmp_token, _value_map);
+			const Rational	*rmp_rat = static_cast<const Rational*>(result.getValue());
+			x.push_back(i);
+			y.push_back(rmp_rat->getReal());
+		}	
 	}
+	catch(const std::exception& e)
+	{
+		std::cerr << "Function cannot be calculated : " << e.what() << '\n';
+		return;
+	}
+	
 	for(size_t i = 0; i < x.size(); i++)
 		std::cout << x[i] << "\t" << y[i] << std::endl;
 	draw(x, y);

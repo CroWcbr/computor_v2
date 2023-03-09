@@ -1,6 +1,10 @@
 #pragma once
 
 # include "main_library.hpp"
+# include <string>
+# include <map>
+
+class Value;
 
 class Computor_v1
 {

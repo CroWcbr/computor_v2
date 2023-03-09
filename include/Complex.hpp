@@ -1,6 +1,8 @@
 #pragma once
 
 # include "main_library.hpp"
+# include <vector>
+# include <string>
 
 class Value;
 class Token;

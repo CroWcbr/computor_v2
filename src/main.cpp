@@ -1,4 +1,7 @@
-#include "../include/main_library.hpp"
+#include "../include/Computor_v2.hpp"
+#include <signal.h>
+#include <algorithm>
+#include <iostream>
 
 static Computor_v2	comp;
 bool	is_radian = false;

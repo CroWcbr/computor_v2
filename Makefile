@@ -21,7 +21,8 @@ HEADER		=	main_library.hpp \
 				Function.hpp \
 				Computation.hpp \
 				math_function.hpp \
-				Computor_v1.hpp
+				Computor_v1.hpp \
+				draw_curve.hpp
 
 SRC			=	main.cpp \
 				Computor_v2.cpp \

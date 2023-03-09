@@ -1,5 +1,6 @@
-# include "../include/main_library.hpp"
-# include <algorithm>
+# include "../include/draw_curve.hpp"
+
+static double _ft_abs_rat(double const tmp) { return tmp < 0 ? -1 * tmp : tmp; }
 
 void draw(std::vector<double> &x, std::vector<double> &y)
 {
@@ -10,8 +11,8 @@ void draw(std::vector<double> &x, std::vector<double> &y)
 	float	y_max = y[0];
 	float	y_min;
 	for (auto i : y)
-		if (std::abs(i) > y_max)
-			y_max = std::abs(i);
+		if (_ft_abs_rat(i) > y_max)
+			y_max = _ft_abs_rat(i);
 	y_min = -y_max;
 
 	sf::RenderWindow window(sf::VideoMode(width, height), "Graph");

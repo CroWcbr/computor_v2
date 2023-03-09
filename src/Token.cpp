@@ -53,7 +53,6 @@ void Token::_setRang()
 		_rang = 0;
 }
 
-//private
 void Token::_which_token_type(std::string const &lexeme)
 {
 	if (lexeme[0] == (char)27)

@@ -23,7 +23,6 @@ Lexer::Lexer(std::string const &input, std::map<std::string, Value*> const &val)
 
 Lexer::~Lexer() {}
 
-//private
 void Lexer::_print_check_token() const
 {
 	std::vector<std::string>	lexer_type_print = \

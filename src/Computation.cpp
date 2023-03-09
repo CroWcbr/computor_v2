@@ -2,16 +2,8 @@
 
 Computation::Computation(std::vector<Token> const &token, std::map<std::string, Value*> const &val): _val(val)
 {
-	// std::cout << "Computation : " << std::endl;
 	for (int i = 0, len = token.size(); i < len; i++)
 	{
-		// std::cout << "i : " << i << " : " << token[i].getLexem() << " : " << token[i].getRang() << " : " << (int)token[i].getType() << std::endl;
-		// if(!_st_n.empty())
-		// 	std::cout << _st_n.top()->to_string() << " : ";
-		// if (!_st_o.empty())
-		// 	std::cout << _st_o.top().getLexem() << " : ";
-		// std::cout << std::endl;
-		// std::cout << "#########" << std::endl;
 		if ((token[i].getLexem() == "+" || token[i].getLexem() == "-") && \
 				(i == 0 || token[i - 1].getLexem() == "("))
 			_st_n.push(new Rational(0));
@@ -48,7 +40,6 @@ Computation::Computation(std::vector<Token> const &token, std::map<std::string, 
 			}
 		}
 	}
-	// std::cout << "WHILE : " << _st_n.size() << " : " << _st_o.size() << std::endl;
 	while (!_st_o.empty())
 		_math();
 }
@@ -56,7 +47,6 @@ Computation::Computation(std::vector<Token> const &token, std::map<std::string, 
 Computation::~Computation()
 {
 	_clear_stack();
-	// std::cout << "ALL CLEAR Computation : " << _st_n.size() << std::endl;
 }
 
 void Computation::_clear_stack()
@@ -72,7 +62,6 @@ void Computation::_math_function(Value *a)
 {
 	if (_val.find(_st_o.top().getLexem()) == _val.end())
 	{
-		// std::cout << a->GetName() << std::endl;
 		if (_st_o.top().getLexem() == "norm")
 			_st_n.push(_standart_funk(_st_o.top().getLexem())(a));
 		else if (a->GetType() == value_type::RATIONAL)
@@ -83,7 +72,6 @@ void Computation::_math_function(Value *a)
 		else
 		{
 			const Function	*tmp_fun = static_cast<const Function*>(a);
-			// std::cout << a->GetName() << std::endl;
 			Function *tmp_new = new Function(*tmp_fun);
 			tmp_new->_simple = false;
 			tmp_new->_map.clear();
@@ -107,43 +95,20 @@ void Computation::_math_function(Value *a)
 
 void Computation::_math()
 {
-	// std::cout << " _math 0 " << std::endl;
 	Value *a = _st_n.top();
 	_st_n.pop();
-	// std::cout << " _math 0.51 : " << a->to_string() << " : " << (int)a->GetType() << std::endl;
 	Value *b = NULL;
-	// std::cout << " _math 0.52 : " << _st_o.top().getLexem() << " : " << (int)_st_o.top().getType() << std::endl;
-	// std::cout << " _math 0.53 : " << (int)token_type::FUNCTION << std::endl;	
 	if (_st_o.top().getType() != token_type::FUNCTION)
 	{
-		// std::cout << " _math 0.6 : " << std::endl;	
 		b = _st_n.top();
 		_st_n.pop();
 	}
-	// std::cout << " _math 1 " << std::endl;
 	try
 	{
 		if (_st_o.top().getType() == token_type::FUNCTION)
-		{
-			// std::cout << " _math 3 " << std::endl;
 			_math_function(a);
-		}
 		else
-		{
-			// std::cout << " _math 4 : " << _st_o.top().getLexem() << std::endl;
-			// a->print();
-			// b->print();
-
 			_st_n.push((b->*_op(_st_o.top().getLexem()))(a));
-		}
-	// std::cout << " _math  6 : " << _st_o.size() << std::endl;
-		// std::cout << "_math : " << std::endl;
-		// // _st_n.top()->print();
-		// // for (auto &s : _st_n.top()->to_token())
-		// // {
-		// // 	std::cout << s.getLexem() << " : " << (int)s.getType() << " : " << s.getRang() << std::endl;
-		// // }
-
 		_st_o.pop();
 		delete a;
 		delete b;
@@ -155,8 +120,7 @@ void Computation::_math()
 		_clear_stack();
 		throw std::runtime_error(e.what());
 	}
-	// std::cout << " _math 22 : " << _st_n.size() << " : " << _st_o.size() << std::endl;
-	// std::cout << " _math 22 : " << (int)_st_n.top()->GetType() << std::endl;
+
 }
 
 Value* (Value::*Computation::_op(std::string const &op_str))(const Value *rhs) const

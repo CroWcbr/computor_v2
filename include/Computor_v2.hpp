@@ -1,6 +1,13 @@
 #pragma once
 
 # include "main_library.hpp"
+# include "draw_curve.hpp"
+# include <list>
+# include <iostream>
+# include <sstream>
+# include <fstream>
+# include "Computor_v1.hpp"
+# include "Computation.hpp"
 
 class Lexer;
 class Value;

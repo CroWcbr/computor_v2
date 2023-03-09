@@ -1,10 +1,18 @@
 #pragma once
 
 # include "main_library.hpp"
+# include <map>
+# include <vector>
+# include <string>
+# include "enum.hpp"
+# include <iostream>
+# include <sstream>
+# include <fstream>
+
+extern bool is_debug;
 
 class Token;
 class Value;
-class Function;
 
 class Lexer
 {
