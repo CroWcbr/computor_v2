@@ -1,7 +1,5 @@
 # computor_v2 with BONUS
 
-# NEED clear display info (not clear yet, may be upgrade programm and operation in future)
-
 This project is the first of a serie to renew your relationship to mathematics, it will be very useful, essential even, for many more projects.
 - check: valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes  ./computor_v2
 
@@ -14,6 +12,7 @@ This project is the first of a serie to renew your relationship to mathematics, 
 - draw - draw the curve (need to read about SFML)
 
 ## BONUS:
+- Function curve display (memory leaks in SFML, not in programm)
 - Added usual functions:
 	- exponential
 	- square root
