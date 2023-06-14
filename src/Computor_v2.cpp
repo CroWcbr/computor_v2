@@ -78,7 +78,7 @@ void Computor_v2::_add_value_map(Lexer const &lex, Value *tmp, std::string const
 			Computor_v1 pol(tmp);
 			std::cout << pol.getMSG() << std::endl;
 			_add_history(input, pol.getMSG());
-			tmp->print();
+			// tmp->print();
 		}
 		delete tmp;
 	}
@@ -174,10 +174,10 @@ void Computor_v2::_print_help() const
 void Computor_v2::_change_mod()
 {
 	is_radian = is_radian == false ? true : false;
-	if (is_debug)
-		std::cout << "is_radian mode ON" << std::endl;
+	if (is_radian)
+		std::cout << "radian mode ON" << std::endl;
 	else
-		std::cout << "is_degree mode ON" << std::endl;
+		std::cout << "degree mode ON" << std::endl;
 }
 
 void Computor_v2::_debug_mod()
@@ -246,6 +246,8 @@ void Computor_v2::_make_draw() const
 		{
 			tmp_token[2] = Token(std::to_string(i), token_type::DIGIT);
 			Computation		result(tmp_token, _value_map);
+			if (result.getValue()->GetType() != value_type::RATIONAL)
+				throw std::runtime_error("value tupe not Rational in draw");
 			const Rational	*rmp_rat = static_cast<const Rational*>(result.getValue());
 			x.push_back(i);
 			y.push_back(rmp_rat->getReal());
@@ -256,8 +258,9 @@ void Computor_v2::_make_draw() const
 		std::cerr << "Function cannot be calculated : " << e.what() << '\n';
 		return;
 	}
-	
-	for(size_t i = 0; i < x.size(); i++)
-		std::cout << x[i] << "\t" << y[i] << std::endl;
+
+	if (is_debug)
+		for(size_t i = 0; i < x.size(); i++)
+			std::cout << x[i] << "\t" << y[i] << std::endl;
 	draw(x, y);
 }

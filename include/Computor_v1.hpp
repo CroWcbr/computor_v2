@@ -25,6 +25,7 @@ private:
 	void				_decision();
 
 	void				_print_polinom_map();
+	std::string			_double_to_string(double n) const;
 
 public:
 	Computor_v1() = delete;

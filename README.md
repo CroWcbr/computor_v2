@@ -12,7 +12,7 @@ This project is the first of a serie to renew your relationship to mathematics, 
 - draw - draw the curve (need to read about SFML)
 
 ## BONUS:
-- Function curve display (memory leaks in SFML, not in programm)
+- Function curve display - git submodule add https://github.com/glfw/glfw.git external/glfw
 - Added usual functions:
 	- exponential
 	- square root
@@ -58,8 +58,3 @@ This project is the first of a serie to renew your relationship to mathematics, 
 | Function %    |       ✅      |      ✅      |       no      |      ✅       |
 | Function ^    |       ✅      |      ✅      |       no      |      ✅       |
 | Function **   |       no       |       no     |       no      |       no      |
-
-
-
-
-

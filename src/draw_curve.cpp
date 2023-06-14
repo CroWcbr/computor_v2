@@ -1,53 +1,62 @@
 # include "../include/draw_curve.hpp"
+# include <iostream>
+#include <limits>
 
 static double _ft_abs_rat(double const tmp) { return tmp < 0 ? -1 * tmp : tmp; }
 
 void draw(std::vector<double> &x, std::vector<double> &y)
 {
-	int		width = 800;
-	int		height = width;
-	float	x_min = x.front();
-	float	x_max = x.back();
-	float	y_max = y[0];
-	float	y_min;
+	if (!glfwInit())
+	{
+		throw std::runtime_error("Can't initialize GLFW!");
+	}
+	double	x_min = x.front();
+	double	x_max = x.back();
+	double	y_max = y[0];
 	for (auto i : y)
+	{
 		if (_ft_abs_rat(i) > y_max)
 			y_max = _ft_abs_rat(i);
-	y_min = -y_max;
-
-	sf::RenderWindow window(sf::VideoMode(width, height), "Graph");
-	sf::View view(sf::FloatRect(x_min, y_min, x_max - x_min, y_max - y_min));
-	window.setView(view);
-
-	sf::VertexArray graph(sf::LinesStrip);
-	graph.setPrimitiveType(sf::LinesStrip);
-	graph.resize(x.size());
-
-	double y_scale = view.getSize().y / (y_max - y_min);
-	for (size_t i = 0; i < x.size(); i++)
-	{
-		graph[i].position = sf::Vector2f(x[i], -y[i] * y_scale);
-		graph[i].color = sf::Color::Green;
 	}
-	sf::VertexArray axes(sf::Lines);
-	axes.append(sf::Vertex(sf::Vector2f(x_min, 0), sf::Color::Black));
-	axes.append(sf::Vertex(sf::Vector2f(x_max, 0), sf::Color::Black));
-	axes.append(sf::Vertex(sf::Vector2f(0, y_min), sf::Color::Black));
-	axes.append(sf::Vertex(sf::Vector2f(0, y_max), sf::Color::Black));
+	if (y_max == std::numeric_limits<double>::infinity())
+		y_max = std::numeric_limits<double>::max();
+	int		width = x_max - x_min;
+	int		height = width;
 
-	while (window.isOpen())
+	GLFWwindow* pWindow = glfwCreateWindow(width, height, "Graph", nullptr, nullptr);
+	if (!pWindow)
 	{
-		sf::Event event;
-		while (window.pollEvent(event))
+		glfwTerminate();
+		throw std::runtime_error("Can't initialize window");
+	}
+	glfwMakeContextCurrent(pWindow);
+
+	for (size_t i = 0; i < x.size(); ++i)
+	{
+		x[i] /= x_max;
+		y[i] /= y_max;
+	}
+	while (!glfwWindowShouldClose(pWindow))
+	{
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		glBegin(GL_POINTS);
+		glColor3f(1.0f, 0.f, 1.0f);
+		for (size_t i = 0; i < x.size(); ++i)
 		{
-			if (event.type == sf::Event::Closed)
-			{
-				window.close();
-			}
+			glVertex2d(x[i], 0);
+			glVertex2d(0, x[i]);
 		}
-		window.clear(sf::Color::White);
-		window.draw(graph);
-		window.draw(axes);
-		window.display();
+
+		glColor3f(1.0f, 1.0f, 1.0f);
+		for (size_t i = 0; i < x.size(); ++i)
+		{
+			glVertex2d(x[i], y[i]);
+		}
+		glEnd();
+
+		glfwSwapBuffers(pWindow);
+		glfwPollEvents();
 	}
+	glfwTerminate();
 }

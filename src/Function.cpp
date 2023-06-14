@@ -125,15 +125,17 @@ Value* Function::operator+(const Value *rhs) const
 			tmp_second[0] = static_cast<const Rational*>(rhs)->getReal();
 		else
 			tmp_second = static_cast<const Function*>(rhs)->getMap();
-		
 		for (auto &m : tmp_second)
 		{
 			if (tmp_first.find(m.first) == tmp_first.end())
 				tmp_first[m.first] = m.second;
 			else
 				tmp_first[m.first] += m.second;
+			if (tmp_first[m.first] == 0)
+				tmp_first.erase(m.first);
 		}
-
+		if (tmp_first.size() == 0)
+			return new Rational(0);
 		if (tmp_first.size() == 1 && tmp_first.find(0) != tmp_first.end())
 			return new Rational(tmp_first[0]);
 		return new Function(_unknown, tmp_first);
@@ -169,15 +171,17 @@ Value* Function::operator-(const Value *rhs) const
 			tmp_second[0] = static_cast<const Rational*>(rhs)->getReal();
 		else
 			tmp_second = static_cast<const Function*>(rhs)->getMap();
-		
 		for (auto &m : tmp_second)
 		{
 			if (tmp_first.find(m.first) == tmp_first.end())
 				tmp_first[m.first] = -m.second;
 			else
 				tmp_first[m.first] -= m.second;
+			if (tmp_first[m.first] == 0)
+				tmp_first.erase(m.first);
 		}
-
+		if (tmp_first.size() == 0)
+			return new Rational(0);
 		if (tmp_first.size() == 1 && tmp_first.find(0) != tmp_first.end())
 			return new Rational(tmp_first[0]);
 		return new Function(_unknown, tmp_first);

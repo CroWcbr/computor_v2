@@ -2,8 +2,8 @@ NAME		=	computor_v2
 
 CC			=	g++
 CFLAGS		=	-Wall -Werror -Wextra
-DRAW_FLAG	=	-lsfml-graphics -lsfml-window -lsfml-system
-
+DRAW_FLAG	=	-lm -lglfw -lGL -ldl
+GLFW_LIB	=	-I./external/glfw
 
 HEADER_DIR	=	./include
 SRC_DIR		=	./src
@@ -61,10 +61,10 @@ $(OBJ_DIR)	:
 				@mkdir -p $(OBJ_DIR)
 			
 $(OBJ_DIR)/%.o	:	$(SRC_DIR)/%.cpp ${HEADER_DIR}/*.hpp Makefile
-					$(CC) $(CFLAGS) -c $< -o $@
+					$(CC) $(CFLAGS) -c $< -o $@ $(GLFW_LIB)
 
 $(NAME)		:	$(OBJ)
-				$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(DRAW_FLAG)
+				$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(DRAW_FLAG) $(GLFW_LIB)
 				@echo "\tCompiling...\t" [ $(NAME) ] $(SUCCESS)
 
 clean		:
