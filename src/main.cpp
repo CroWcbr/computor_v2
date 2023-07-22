@@ -5,7 +5,7 @@
 
 static Computor_v2	comp;
 bool	is_radian = false;
-bool	is_debug = false;
+bool	is_debug = true;
 
 void	_signal_handler(int signal)
 {

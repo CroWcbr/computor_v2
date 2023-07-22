@@ -1,7 +1,16 @@
 #include "../include/Computation.hpp"
+#include "../include/Matrix.hpp"
 
 Computation::Computation(std::vector<Token> const &token, std::map<std::string, Value*> const &val): _val(val)
 {
+if (is_debug)
+{
+	std::cout << "Computation:" << std::endl;
+	for (auto i : token)
+		std::cout << i.getLexem() << " ";
+	std::cout << std::endl;
+}
+
 	for (int i = 0, len = token.size(); i < len; i++)
 	{
 		if ((token[i].getLexem() == "+" || token[i].getLexem() == "-") && \
@@ -20,6 +29,24 @@ Computation::Computation(std::vector<Token> const &token, std::map<std::string, 
 		}
 		else if (token[i].getType() == token_type::FUNCTION)
 			_st_o.push(token[i]);
+		else if (token[i].getLexem() == "[")
+		{
+			std::vector<Token>	matrix;
+			int b = 1;
+			matrix.push_back(token[i]);
+			i++;
+			while (b != 0 && i < len)
+			{
+				matrix.push_back(token[i]);
+				if (token[i].getLexem() == "[")
+					b++;
+				if (token[i].getLexem() == "]")
+					b--;
+				i++;
+			}
+			i--;
+			_st_n.push(new Matrix(matrix, val));
+		}
 		else if (token[i].getLexem() == ")")
 		{
 			while(_st_o.top().getLexem() != "(")

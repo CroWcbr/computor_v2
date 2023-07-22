@@ -10,12 +10,10 @@ Lexer::Lexer(std::string const &input, std::map<std::string, Value*> const &val)
 	if (is_debug)
 		_print_check_token();
 
-	if (_type == lexer_type::MATRIX)
-		_check_matrix();
-	else if (_type == lexer_type::COMMAND)
+	if (_type == lexer_type::COMMAND)
 		_check_command();
 	else
-		_check_expr();
+		_check_expr(_expr);
 
 	if (is_debug)
 		print();
@@ -98,7 +96,7 @@ std::vector<std::string> Lexer::_preparation_token(std::string const &input)
 	else if (right_tokens.back() == "?" && right_tokens.size() == 1)
 	{
 		_type = lexer_type::SOLVE;
-		_var_name = "cos";
+		_var_name = "solve";
 		return left_tokens;
 	}
 	else if (left_tokens.size() == 1 && \
@@ -106,15 +104,12 @@ std::vector<std::string> Lexer::_preparation_token(std::string const &input)
 	{
 		if (_is_forbidden_name(left_tokens.front()))
 			throw std::runtime_error("PARSE ERROR! Forbidden unknown name : " + left_tokens[0]);
-		if (right_tokens.front() == "[")
-			_type = lexer_type::MATRIX;
-		else
-			_type = lexer_type::RAT_COM_MAT;
+		_type = lexer_type::RAT_COM_MAT;
 		_var_name = left_tokens.front();
 		return right_tokens;
 	}
 	else if (left_tokens.size() == 4 && \
-			_is_str(left_tokens[0]) && \
+			_is_str(left_tokens[0]) && 
 			left_tokens[1] == "(" && \
 			_is_str(left_tokens[2]) && \
 			left_tokens[3] == ")")
@@ -181,8 +176,7 @@ std::string Lexer::_separate_digit_and_alpha(std::string const &input) const
 {
 	std::string tmp = input;
 	for(size_t i = 0; i < tmp.size() - 1; i++)
-		if ((isdigit(tmp[i]) && isalpha(tmp[i + 1])) || \
-				(isdigit(tmp[i + 1]) && isalpha(tmp[i])))
+		if (isdigit(tmp[i]) && isalpha(tmp[i + 1]))
 			tmp.insert(i + 1, "*");
 	return tmp;
 }
@@ -296,8 +290,6 @@ void Lexer::_tokenization(std::vector<std::string> const &input_to_vector)
 			_val.find(_expr.back().getLexem()) != _val.end() &&
 			_val.find(_expr.back().getLexem())->second->GetType() == value_type::MATRIX)
 			throw std::runtime_error("PARSE ERROR! POLINOM has MATRIX variable");
-
-
 	}
 }
 
@@ -316,38 +308,40 @@ bool  Lexer::_check_solve() const
 	return false;
 }
 
-void  Lexer::_check_matrix() const
+void  Lexer::_check_matrix(std::vector<Token>& matrix) const
 {
-	if (_expr.size() < 5)
-		throw std::runtime_error("PARSE MATRIX ERROR! _expr.size() < 5");
-	if (_expr[0].getLexem() != "[" || _expr[1].getLexem() != "[")
+	// std::cout << "!!! _check_matrix : \t";
+	// for (auto i : matrix)
+	// 	std::cout << i.getLexem() << " ";
+	// std::cout << std::endl;
+
+	if (matrix.size() < 4)
+		throw std::runtime_error("PARSE MATRIX ERROR! matrix.size() < 4");
+	if (matrix[0].getLexem() != "[" || matrix[1].getLexem() != "[")
 		throw std::runtime_error("PARSE MATRIX ERROR! begin SQUARE_BRACET_OPEN");
-	if (_expr[_expr.size() - 1].getLexem() != "]" || _expr[_expr.size() - 2].getLexem() != "]")
+	if (matrix[matrix.size() - 1].getLexem() != "]" || matrix[matrix.size() - 2].getLexem() != "]")
 		throw std::runtime_error("PARSE MATRIX ERROR! end SQUARE_BRACET_CLOSE");
 
 	int	tmp_col = 0;
-	int	check_col = 0;
+	int	check_col = -1;
 	int	square = 0;
-	for (int i = 1, len = _expr.size() - 1; i < len; i++)
+	for (int i = 1, len = matrix.size() - 1; i < len; ++i)
 	{
-		std::string	lex_i = _expr[i].getLexem();
-		std::string	lex_next = _expr[i + 1].getLexem();
-		token_type	tok_i = _expr[i].getType();
-		token_type	tok_next = _expr[i + 1].getType();
+		// std::cout << i << "\t" << len << "\t";
+		// std::cout <<  matrix[i].getLexem() << std::endl;
+
+		std::string	lex_i = matrix[i].getLexem();
+
 		if (lex_i == "[")
 		{
-			if (square == 1 || \
-			!(lex_next == "+" || lex_next == "-" || _expr[i + 1].getType() == token_type::DIGIT))
-				throw std::runtime_error("PARSE MATRIX ERROR! near '['");
-			square++;
+			if (square == 1)
+				throw std::runtime_error("PARSE MATRIX ERROR! too much '['");
+			++square;
 		}
 		else if (lex_i == "]")
 		{
-			if (square == 0 || \
-			!(lex_next == ";" || lex_next == "]"))
-				throw std::runtime_error("PARSE MATRIX ERROR! wrong near '['");
-			square--;
-			if (check_col == 0)
+			--square;
+			if (check_col == -1)
 				check_col = tmp_col;
 			if (check_col != tmp_col)
 				throw std::runtime_error("PARSE MATRIX ERROR! wrong column number");
@@ -355,30 +349,23 @@ void  Lexer::_check_matrix() const
 		}
 		else if (lex_i == ";")
 		{
-			if (!(lex_next == "["))
+			if (matrix[i - 1].getLexem() != "]" && matrix[i + 1].getLexem() != "[")
 				throw std::runtime_error("PARSE MATRIX ERROR! wrong near ';'");
 		}
-		else if (lex_i == ",")
+		else
 		{
-			if (!(lex_next == "+" || lex_next == "-" || tok_next == token_type::DIGIT))
-				throw std::runtime_error("PARSE MATRIX ERROR! wrong near ','");
-		}
-		else if (lex_i == "+" || lex_i == "-")
-		{
-			if (!(tok_next == token_type::DIGIT))
-				throw std::runtime_error("PARSE MATRIX ERROR! wrong near '+' or '-'");
-		}
-		else if (tok_i == token_type::DIGIT)
-		{
-			if (!(lex_next == "]" || lex_next == ","))
-				throw std::runtime_error("PARSE MATRIX ERROR! wrong near DIGIT");
+			std::vector<Token>	check_expr_again;
+			while(matrix[i].getLexem() != "," && matrix[i].getLexem() != "]")
+			{
+				check_expr_again.push_back(matrix[i]);
+				i++;
+			}
+			_check_expr(check_expr_again);
+			if (matrix[i].getLexem() != "]")
+				--square;
 			tmp_col++;
 		}
-		else
-			throw std::runtime_error("PARSE MATRIX ERROR! wrong token");
 	}
-	if (square != 0)
-		throw std::runtime_error("PARSE MATRIX ERROR! wrong square");
 }
 
 void  Lexer::_check_command() const
@@ -393,42 +380,73 @@ void  Lexer::_check_command() const
 		throw std::runtime_error("PARSE ERROR! unknown command");
 }
 
-void Lexer::_check_expr() const
+void Lexer::_check_expr(std::vector<Token>& expr) const
 {
-	if (!(_expr[0].getType() == token_type::DIGIT || \
-			_expr[0].getType() == token_type::COMPLEX || \
-			_expr[0].getType() == token_type::VARIABLE || \
-			_expr[0].getType() == token_type::FUNCTION || \
-			_expr[0].getLexem() == "(" || \
-			_expr[0].getLexem() == "+" || \
-			_expr[0].getLexem() == "-"))
+	// std::cout << "!!! _check_expr : \t";
+	// for (auto i : expr)
+	// 	std::cout << i.getLexem() << " ";
+	// std::cout << std::endl;
+
+	if (!(expr[0].getType() == token_type::DIGIT || \
+			expr[0].getType() == token_type::COMPLEX || \
+			expr[0].getType() == token_type::VARIABLE || \
+			expr[0].getType() == token_type::FUNCTION || \
+			expr[0].getLexem() == "(" || \
+			expr[0].getLexem() == "+" || \
+			expr[0].getLexem() == "-" || \
+			expr[0].getLexem() == "["))
 		throw std::runtime_error("PARSE ERROR! incorrect syntax: Wrong first symbol");
 
-	int	len = _expr.size() - 1;
-	if (!(_expr[len].getType() == token_type::DIGIT || 
-			_expr[len].getType() == token_type::COMPLEX || 
-			_expr[len].getType() == token_type::VARIABLE || 
-			_expr[len].getLexem() == ")"))
+	int	len = expr.size() - 1;
+	if (!(expr[len].getType() == token_type::DIGIT || 
+			expr[len].getType() == token_type::COMPLEX || 
+			expr[len].getType() == token_type::VARIABLE || 
+			expr[len].getLexem() == ")" ||
+			expr[len].getLexem() == "]"))
 		throw std::runtime_error("PARSE ERROR! incorrect syntax: Wrong last symbol");
 
 	int	bracet = 0;
 	for (int i = 0; i <= len; i++)
 	{
-		std::string	lex_i = _expr[i].getLexem();
-		token_type	tok_i = _expr[i].getType();
+		std::string	lex_i = expr[i].getLexem();
+		token_type	tok_i = expr[i].getType();
 
 		if (lex_i == "(")
 			bracet++;
 		else if (lex_i == ")")
 			bracet--;
 
+		if (lex_i == "]")
+			throw std::runtime_error("PARSE ERROR! incorrect syntax: Wrong last symbol");
+
 		if (i == len)
 			continue;
 
-		std::string	lex_next = _expr[i + 1].getLexem();
-		token_type	tok_next = _expr[i + 1].getType();
+		std::string	lex_next = expr[i + 1].getLexem();
+		token_type	tok_next = expr[i + 1].getType();
 
-		if (tok_i == token_type::MATRIX_PARSE)
+
+		if (lex_i == "[")
+		{
+			std::vector<Token>	matrix;
+			int b = 1;
+			matrix.push_back(expr[i]);
+			i++;
+			while (b != 0 && i <= len)
+			{
+				matrix.push_back(expr[i]);
+				if (expr[i].getLexem() == "[")
+					b++;
+				if (expr[i].getLexem() == "]")
+					b--;
+				i++;
+			}
+			if (b != 0)
+				throw std::runtime_error("PARSE ERROR! incorrect syntax in matrix");
+			_check_matrix(matrix);
+			i--;
+		}
+		else if (tok_i == token_type::MATRIX_PARSE)
 			throw std::runtime_error("PARSE ERROR! incorrect syntax: matrix simbol in expression");
 		else if (tok_i == token_type::OPERATION && \
 				tok_next == token_type::OPERATION)
@@ -453,7 +471,8 @@ void Lexer::_check_expr() const
 			throw std::runtime_error("PARSE ERROR! incorrect syntax: must be function + '('");
 		else if ((tok_i == token_type::VARIABLE || \
 				tok_i == token_type::DIGIT || \
-				tok_i == token_type::COMPLEX) && \
+				tok_i == token_type::COMPLEX || \
+				lex_i == "]") && \
 				!(tok_next == token_type::OPERATION || \
 				lex_next == ")"))
 			throw std::runtime_error("PARSE ERROR! incorrect syntax: wrong symbol after variable or digit or complex");

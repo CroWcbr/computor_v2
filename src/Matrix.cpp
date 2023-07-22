@@ -1,4 +1,5 @@
 #include "../include/Matrix.hpp"
+#include "../include/Computation.hpp"
 
 Matrix::Matrix(const Matrix &other):Value(other.GetType(), "_tmp") { *this = other; }
 
@@ -19,28 +20,59 @@ Matrix &Matrix::operator=(const Matrix &other)
 	return *this;
 }
 
-Matrix::Matrix(Lexer const &lex):Value(value_type::MATRIX, lex.getVarName())
+Matrix::Matrix(std::vector<Token>& mat, std::map<std::string, Value*> const &_val)
+: Value(value_type::MATRIX, "_tmp")
 {
+if (is_debug)
+{
+	std::cout << "Matrix:" << std::endl;
+	for (auto i : mat)
+		std::cout << i.getLexem() << " ";
+	std::cout << std::endl;
+}
+
 	_col = 0;
 	_row = 0;
-	for (int i = 1, len = lex.getTokens().size() - 1; i < len; i++)
+	for (int i = 1, len = mat.size() - 1; i < len; i++)
 	{
-		std::string	lexem_i = lex.getTokens()[i].getLexem();
-		if (lex.getTokens()[i].getLexem() == "[")
+		std::string	lexem_i = mat[i].getLexem();
+		if (mat[i].getLexem() == "[")
 			_row++;
-		else if (lex.getTokens()[i].getType() == token_type::DIGIT)
-		{
-			int znak = 1;
-			if (lex.getTokens()[i - 1].getLexem() == "-")
-				znak = -1;
-			_mat.push_back(std::stod(lex.getTokens()[i].getLexem()) * znak);
-			_col++;
-		}
+		// else if (mat[i].getType() == token_type::DIGIT)
+		// {
+		// 	int znak = 1;
+		// 	if (mat[i - 1].getLexem() == "-")
+		// 		znak = -1;
+		// 	_mat.push_back(std::stod(mat[i].getLexem()) * znak);
+		// 	_col++;
+		// }
 		else if (lexem_i == "]" || lexem_i == ";" || lexem_i == "," || \
 				lexem_i == "-" || lexem_i == "+")
 			;
 		else
-			throw std::runtime_error("PARSE MATRIX ERROR! Unknown Token");
+		{
+			std::vector<Token>	expr_in_matrix;
+			while(mat[i].getLexem() != "," && mat[i].getLexem() != "]")
+			{
+				expr_in_matrix.push_back(mat[i]);
+				i++;
+			}
+			Computation		result(expr_in_matrix, _val);
+			_col++;
+			Value	*tmp = result.getValue()->clone();
+			if (tmp->GetType() == value_type::RATIONAL)
+			{
+				const Rational	*tmp_rat = static_cast<const Rational*>(tmp);
+				_mat.push_back(tmp_rat->getReal());
+				delete tmp;
+			}
+			else
+			{
+				delete tmp;
+				throw std::runtime_error("PARSE MATRIX ERROR! Unknown Token");
+			}
+		}
+
 	}
 	_col /= _row;
 };

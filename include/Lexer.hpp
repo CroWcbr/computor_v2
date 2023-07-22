@@ -37,8 +37,8 @@ private:
 
 	void						_tokenization(std::vector<std::string> const &input_to_vector);
 
-	void						_check_matrix() const;
-	void						_check_expr() const;
+	void						_check_matrix(std::vector<Token>& matrix) const;
+	void						_check_expr(std::vector<Token>& expr) const;
 	void						_check_command() const;
 	bool						_check_solve() const;
 

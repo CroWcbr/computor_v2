@@ -10,6 +10,7 @@ This project is the first of a serie to renew your relationship to mathematics, 
 - change_mod - radians on/off
 - test - start test
 - draw - draw the curve (need to read about SFML)
+- quit - for exit
 
 ## BONUS:
 - Function curve display - git submodule add https://github.com/glfw/glfw.git external/glfw

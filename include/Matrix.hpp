@@ -5,6 +5,8 @@
 # include <vector>
 
 class Value;
+class Token;
+class Computation;
 
 class Matrix: public Value
 {
@@ -28,7 +30,7 @@ public:
 
 	Matrix(const Matrix &other);
 	Matrix &operator=(const Matrix &other);
-	Matrix(Lexer const &lex);
+	Matrix(std::vector<Token>& mat, std::map<std::string, Value*> const &_val);
 	Matrix(int const row, int const col);
 	virtual ~Matrix() {};
 

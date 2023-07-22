@@ -11,6 +11,7 @@
 
 class Lexer;
 class Value;
+class Matrix;
 
 struct History
 { 

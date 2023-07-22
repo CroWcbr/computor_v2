@@ -235,7 +235,7 @@ Value* Complex::operator^(const Value *rhs) const
 			throw std::runtime_error("COMPUTATION ERROR! Complex *operator^ : pow < 0");
 		if (tmp_rat->getReal() != static_cast<int>(tmp_rat->getReal()))
 			throw std::runtime_error("COMPUTATION ERROR! Complex *operator^ : pow is not int");
-		for (int i = tmp_rat->getReal(); i > 0; i--)
+		for (int i = tmp_rat->getReal() - 1; i > 0; i--)
 		{
 			double tmp_real = real;
 			double tmp_image = image;

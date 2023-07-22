@@ -20,10 +20,9 @@ void Computor_v2::analysis(std::string const &input)
 		if (lex.getType() == lexer_type::COMMAND)
 		{
 			_make_command(lex);
-			
 		}
-		else if (lex.getType() == lexer_type::MATRIX)
-			tmp = new Matrix(lex);
+		// else if (lex.getType() == lexer_type::MATRIX)
+		// 	tmp = new Matrix(lex);
 		else
 		{
 			Computation		result(lex.getTokens(), _value_map);
@@ -58,7 +57,7 @@ void Computor_v2::_add_value_map(Lexer const &lex, Value *tmp, std::string const
 		if (_value_map.find(lex.getVarName()) != _value_map.end())
 			delete _value_map[lex.getVarName()];
 		_value_map[lex.getVarName()] = tmp;
-		std::cout << "RESULT : ";
+		std::cout << "RESULT : " << std::endl;
 		tmp->print();
 		_add_history(input, tmp->to_string());
 	}
