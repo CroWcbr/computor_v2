@@ -66,6 +66,11 @@ if (is_debug)
 				_mat.push_back(tmp_rat->getReal());
 				delete tmp;
 			}
+			else if (tmp->GetType() == value_type::COMPLEX)
+			{
+				delete tmp;
+				throw std::runtime_error("PARSE MATRIX ERROR! Token is Matrix or Function or Complex");
+			}
 			else
 			{
 				delete tmp;
@@ -144,6 +149,15 @@ Value* Matrix::operator+(const Value *rhs) const
 			tmp->_mat[i] += tmp_mat->getMat()[i];
 		return (tmp);
 	}
+	else if (rhs->GetType() == value_type::RATIONAL)
+	{
+		const Rational	*tmp_rat = static_cast<const Rational*>(rhs);
+		Matrix *tmp = new Matrix(*this);
+		double rat = tmp_rat->getReal();
+		for (int i = 0, len = _mat.size(); i < len; ++i)
+			tmp->_mat[i] += rat;
+		return (tmp);
+	}
 	else
 		throw std::runtime_error("COMPUTATION ERROR! Matrix *operator+");
 }
@@ -160,6 +174,15 @@ Value* Matrix::operator-(const Value *rhs) const
 		Matrix *tmp = new Matrix(*this);
 		for (int i = 0, len = _mat.size(); i < len; ++i)
 			tmp->_mat[i] -= tmp_mat->getMat()[i];
+		return (tmp);
+	}
+	else if (rhs->GetType() == value_type::RATIONAL)
+	{
+		const Rational	*tmp_rat = static_cast<const Rational*>(rhs);
+		Matrix *tmp = new Matrix(*this);
+		double rat = tmp_rat->getReal();
+		for (int i = 0, len = _mat.size(); i < len; ++i)
+			tmp->_mat[i] -= rat;
 		return (tmp);
 	}
 	else

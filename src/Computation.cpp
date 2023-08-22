@@ -95,7 +95,7 @@ void Computation::_math_function(Value *a)
 			_st_n.push(_standart_funk(_st_o.top().getLexem())(a));
 		else if (a->GetType() == value_type::MATRIX || \
 				a->GetType() == value_type::COMPLEX)
-			throw std::runtime_error("invalid type for standert Function");
+			throw std::runtime_error("invalid type for standart Function");
 		else
 		{
 			const Function	*tmp_fun = static_cast<const Function*>(a);

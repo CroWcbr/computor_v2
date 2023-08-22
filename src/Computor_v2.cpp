@@ -21,8 +21,6 @@ void Computor_v2::analysis(std::string const &input)
 		{
 			_make_command(lex);
 		}
-		// else if (lex.getType() == lexer_type::MATRIX)
-		// 	tmp = new Matrix(lex);
 		else
 		{
 			Computation		result(lex.getTokens(), _value_map);
@@ -77,7 +75,6 @@ void Computor_v2::_add_value_map(Lexer const &lex, Value *tmp, std::string const
 			Computor_v1 pol(tmp);
 			std::cout << pol.getMSG() << std::endl;
 			_add_history(input, pol.getMSG());
-			// tmp->print();
 		}
 		delete tmp;
 	}

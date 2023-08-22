@@ -31,10 +31,10 @@ This project is the first of a serie to renew your relationship to mathematics, 
 ## table type
 |               |    Rational   |    Complex    |    Matrix     |    Function   |
 | :-----------: | :-----------: | :-----------: | :-----------: | :-----------: |
-| Rational +    |       ✅      |       ✅     |       no      |      ✅      |
-| Rational -    |       ✅      |       ✅     |       no      |      ✅      |
+| Rational +    |       ✅      |       ✅     |       ✅      |      ✅      |
+| Rational -    |       ✅      |       ✅     |       ✅      |      ✅      |
 | Rational *    |       ✅      |       ✅     |       ✅      |      ✅      |
-| Rational /    |       ✅      |       ✅     |       no      |      ✅      |
+| Rational /    |       ✅      |       ✅     |       ✅      |      ✅      |
 | Rational %    |       ✅      |       no     |       no      |      ✅       |
 | Rational ^    |       ✅      |       no     |       no      |      ✅       |
 | Rational **   |       no       |       no     |       no      |       no      |
@@ -45,8 +45,8 @@ This project is the first of a serie to renew your relationship to mathematics, 
 | Complex %     |       no       |       no     |       no      |      no       |
 | Complex ^     |       ✅      |       no     |       no      |      ✅       |
 | Complex **    |       no       |       no     |       no      |       no      |
-| Matrix +      |       no      |       no      |       ✅      |      no      |
-| Matrix -      |       no      |       no      |       ✅      |      no      |
+| Matrix +      |       ✅      |       no      |       ✅      |      no      |
+| Matrix -      |       ✅      |       no      |       ✅      |      no      |
 | Matrix *      |       ✅      |       no     |       ✅      |      no      |
 | Matrix /      |       ✅      |       no     |       no      |      no      |
 | Matrix %      |       no       |       no     |       no      |      no       |

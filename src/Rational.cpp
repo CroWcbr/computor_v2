@@ -54,6 +54,11 @@ Value* Rational::operator+(const Value *rhs) const
 		const Function	*tmp_fun = static_cast<const Function*>(rhs);
 		return (*tmp_fun + this);
 	}
+	else if (rhs->GetType() == value_type::MATRIX)
+	{
+		const Matrix	*tmp_mat = static_cast<const Matrix*>(rhs);
+		return (*tmp_mat + this);
+	}
 	else
 		throw std::runtime_error("COMPUTATION ERROR! Rational *operator+");
 }
@@ -92,6 +97,18 @@ Value* Rational::operator-(const Value *rhs) const
 			throw std::runtime_error(e.what());
 		}
 		return tmp_val;
+	}
+	else if (rhs->GetType() == value_type::MATRIX)
+	{
+		const Matrix	*tmp_mat = static_cast<const Matrix*>(rhs);
+		Rational	*tmp_rat_minus = new Rational(-1);
+		Value		*tmp_val_minus = NULL;
+		Value		*tmp_val = NULL;
+		tmp_val_minus = *tmp_mat * tmp_rat_minus;
+		tmp_val = *tmp_val_minus + this;
+		delete tmp_rat_minus;	
+		delete tmp_val_minus;
+		return (tmp_val);
 	}
 	else
 		throw std::runtime_error("COMPUTATION ERROR! Rational *operator-");
@@ -166,6 +183,28 @@ Value* Rational::operator/(const Value *rhs) const
 		}
 		return tmp_val;
 	}
+	else if (rhs->GetType() == value_type::MATRIX)
+	{
+		const Matrix	*tmp_mat = static_cast<const Matrix*>(rhs);
+		Matrix			*tmp_new_mat = new Matrix(*tmp_mat);
+		Rational		*tmp_rat_minus = new Rational(-1);
+		Value	*tmp_val;
+		try
+		{
+			tmp_val = *tmp_new_mat ^ tmp_rat_minus;
+			delete tmp_new_mat;
+			delete tmp_rat_minus;
+		}
+		catch(const std::exception& e)
+		{
+			delete tmp_new_mat;
+			delete tmp_rat_minus;
+			throw std::runtime_error(e.what());
+		}
+		Value	*result = *tmp_val * this;
+		delete tmp_val;
+		return (result);
+	}
 	else
 		throw std::runtime_error("COMPUTATION ERROR! Rational *operator/");
 }
@@ -200,7 +239,16 @@ Value* Rational::operator%(const Value *rhs) const
 		}
 		return tmp_val;
 	}
-	throw std::runtime_error("ERROR!!! Rational operator%");
+	else if (rhs->GetType() == value_type::MATRIX)
+	{
+		throw std::runtime_error("ERROR!!! Rational operator%% Matrix - senseless operation");
+	}
+	else if (rhs->GetType() == value_type::COMPLEX)
+	{
+		throw std::runtime_error("ERROR!!! Rational operator%% Complex - don't realized");
+	}
+	else
+		throw std::runtime_error("ERROR!!! Rational operator%");
 }
 
 Value* Rational::operator^(const Value *rhs) const
@@ -251,6 +299,14 @@ Value* Rational::operator^(const Value *rhs) const
 			throw std::runtime_error(e.what());
 		}
 		return tmp_val;
+	}
+	else if (rhs->GetType() == value_type::COMPLEX)
+	{
+		throw std::runtime_error("ERROR!!! Rational operator^ Complex - don't realized");
+	}
+	else if (rhs->GetType() == value_type::MATRIX)
+	{
+		throw std::runtime_error("ERROR!!! Rational operator^ Matrix - senseless operation");
 	}
 	else
 		throw std::runtime_error("ERROR!!! Rational operator^");
