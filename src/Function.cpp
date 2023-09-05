@@ -142,8 +142,8 @@ Value* Function::operator+(const Value *rhs) const
 	}
 	else
 	{
-		if (rhs->GetType() == value_type::MATRIX)
-			throw std::runtime_error("COMPUTATION ERROR! Function *operator+");
+		// if (rhs->GetType() == value_type::MATRIX)
+		// 	throw std::runtime_error("COMPUTATION ERROR! Function *operator+");
 		Function *tmp_new = new Function(*this);
 		tmp_new->_simple = false;
 		tmp_new->_map.clear();
@@ -188,8 +188,8 @@ Value* Function::operator-(const Value *rhs) const
 	}
 	else
 	{
-		if (rhs->GetType() == value_type::MATRIX)
-			throw std::runtime_error("COMPUTATION ERROR! Function *operator-");
+		// if (rhs->GetType() == value_type::MATRIX)
+		// 	throw std::runtime_error("COMPUTATION ERROR! Function *operator-");
 		Function *tmp_new = new Function(*this);
 		tmp_new->_simple = false;
 		tmp_new->_map.clear();

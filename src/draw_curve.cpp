@@ -18,6 +18,7 @@ void draw(std::vector<double> &x, std::vector<double> &y)
 		if (_ft_abs_rat(i) > y_max)
 			y_max = _ft_abs_rat(i);
 	}
+	y_max++;
 	if (y_max == std::numeric_limits<double>::infinity())
 		y_max = std::numeric_limits<double>::max();
 	int		width = x_max - x_min;

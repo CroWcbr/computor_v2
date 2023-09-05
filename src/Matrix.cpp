@@ -117,19 +117,21 @@ Value* Matrix::clone() const { return new Matrix(*this); }
 std::vector<Token> Matrix::to_token() const 
 {
 	std::vector<Token> tmp;
-	tmp.push_back(Token("[ ", token_type::MATRIX_PARSE));
+	tmp.push_back(Token("[", token_type::MATRIX_PARSE));
 	for (int r = 0; r < _row; r++)
 	{
 		tmp.push_back(Token("[", token_type::MATRIX_PARSE));
 		for (int c = 0; c < _col; c++)
 		{
-			tmp.push_back(Token(std::to_string( _mat[c + r * _col]), token_type::MATRIX_PARSE));
+			tmp.push_back(Token(std::to_string( _mat[c + r * _col]), token_type::DIGIT));
 			if (c != _col - 1)
-				tmp.push_back(Token(", ", token_type::MATRIX_PARSE));
+				tmp.push_back(Token(",", token_type::MATRIX_PARSE));
 		}
 		tmp.push_back(Token("]", token_type::MATRIX_PARSE));
+		if (r < _row - 1)
+			tmp.push_back(Token(";", token_type::MATRIX_PARSE));
 	}
-	tmp.push_back(Token(" ]", token_type::MATRIX_PARSE));
+	tmp.push_back(Token("]", token_type::MATRIX_PARSE));
 	return tmp;
 }
 
@@ -157,6 +159,15 @@ Value* Matrix::operator+(const Value *rhs) const
 		for (int i = 0, len = _mat.size(); i < len; ++i)
 			tmp->_mat[i] += rat;
 		return (tmp);
+	}
+	else if (rhs->GetType() == value_type::FUNCTION)
+	{
+		const Function	*tmp_fun = static_cast<const Function*>(rhs);
+		return (*tmp_fun + this);
+	}
+	else if (rhs->GetType() == value_type::COMPLEX)
+	{
+		throw std::runtime_error("COMPUTATION ERROR! Matrix *operator+ Complex - don't realized");
 	}
 	else
 		throw std::runtime_error("COMPUTATION ERROR! Matrix *operator+");

@@ -45,14 +45,14 @@ This project is the first of a serie to renew your relationship to mathematics, 
 | Complex %     |       no       |       no     |       no      |      no       |
 | Complex ^     |       ✅      |       no     |       no      |      ✅       |
 | Complex **    |       no       |       no     |       no      |       no      |
-| Matrix +      |       ✅      |       no      |       ✅      |      no      |
+| Matrix +      |       ✅      |       no      |       ✅      |      ✅      |
 | Matrix -      |       ✅      |       no      |       ✅      |      no      |
 | Matrix *      |       ✅      |       no     |       ✅      |      no      |
 | Matrix /      |       ✅      |       no     |       no      |      no      |
 | Matrix %      |       no       |       no     |       no      |      no       |
 | Matrix ^      |       ✅      |       no     |       no      |      no       |
 | Matrix **     |       no       |       no     |       ✅      |       no      |
-| Function +    |       ✅      |       ✅     |       no      |      ✅      |
+| Function +    |       ✅      |       ✅     |       ✅      |      ✅      |
 | Function -    |       ✅      |       ✅     |       no      |      ✅      |
 | Function *    |       ✅      |       ✅     |       no      |      ✅      |
 | Function /    |       ✅      |       ✅     |       no      |      ✅      |
