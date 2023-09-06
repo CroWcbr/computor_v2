@@ -196,6 +196,22 @@ Value* Matrix::operator-(const Value *rhs) const
 			tmp->_mat[i] -= rat;
 		return (tmp);
 	}
+	else if (rhs->GetType() == value_type::FUNCTION)
+	{
+		const Function	*tmp_fun = static_cast<const Function*>(rhs);
+		Rational		*tmp_rat_minus = new Rational(-1);
+		Value			*tmp_fun_minus = NULL;
+		Value			*tmp = NULL;
+		tmp_fun_minus = *tmp_fun * tmp_rat_minus;
+		tmp = *tmp_fun_minus + this;
+		delete tmp_rat_minus;	
+		delete tmp_fun_minus;
+		return (tmp);
+	}
+	else if (rhs->GetType() == value_type::COMPLEX)
+	{
+		throw std::runtime_error("COMPUTATION ERROR! Matrix *operator- Complex - don't realized");
+	}
 	else
 		throw std::runtime_error("COMPUTATION ERROR! Matrix *operator-");
 }
@@ -223,6 +239,15 @@ Value* Matrix::operator*(const Value *rhs) const
 			tmp->_mat[i] *= tmp_mat->getMat()[i];
 		return (tmp);
 	}
+	else if (rhs->GetType() == value_type::FUNCTION)
+	{
+		const Function	*tmp_fun = static_cast<const Function*>(rhs);
+		return (*tmp_fun * this);
+	}
+	else if (rhs->GetType() == value_type::COMPLEX)
+	{
+		throw std::runtime_error("COMPUTATION ERROR! Matrix *operator* Complex - don't realized");
+	}
 	else
 		throw std::runtime_error("COMPUTATION ERROR! Matrix *operator*");
 }
@@ -242,6 +267,54 @@ Value* Matrix::operator/(const Value *rhs) const
 			tmp->_mat[i] /= rat;
 		return (tmp);
 	}
+	else if (rhs->GetType() == value_type::MATRIX)
+	{
+		const Matrix	*tmp_mat = static_cast<const Matrix*>(rhs);
+		Matrix			*tmp_new_mat = new Matrix(*tmp_mat);
+		Rational		*tmp_rat_minus = new Rational(-1);
+		Value	*tmp_val;
+		try
+		{
+			tmp_val = *tmp_new_mat ^ tmp_rat_minus;
+			delete tmp_new_mat;
+			delete tmp_rat_minus;
+		}
+		catch(const std::exception& e)
+		{
+			delete tmp_new_mat;
+			delete tmp_rat_minus;
+			throw std::runtime_error(e.what());
+		}
+		Value	*result = *tmp_val * this;
+		delete tmp_val;
+		return (result);
+	}
+	else if (rhs->GetType() == value_type::FUNCTION)
+	{
+		const Function	*tmp_fun = static_cast<const Function*>(rhs);
+		Function 		*tmp_new = new Function(*tmp_fun);
+		Rational		*tmp_rat = new Rational(1);
+		Value			*tmp_val = NULL;
+		try
+		{
+			tmp_val = *tmp_rat / tmp_new;
+			delete tmp_rat;
+			delete tmp_new;
+		}
+		catch(const std::exception& e)
+		{
+			delete tmp_rat;
+			delete tmp_new;
+			throw std::runtime_error(e.what());
+		}
+		Value		*result = *tmp_val * this;
+		delete tmp_val;
+		return result;
+	}
+	else if (rhs->GetType() == value_type::COMPLEX)
+	{
+		throw std::runtime_error("COMPUTATION ERROR! Matrix *operator/ Complex - don't realized");
+	}
 	else
 		throw std::runtime_error("COMPUTATION ERROR! Matrix *operator/");
 }
@@ -251,7 +324,7 @@ Value* Matrix::operator%(const Value *rhs) const
 	(void)rhs;
 	if (is_debug)
 		std::cout << "Matrix *operator%" << std::endl;
-	throw std::runtime_error("COMPUTATION ERROR! Matrix *operator%");
+	throw std::runtime_error("COMPUTATION ERROR! Matrix *operator%% - don't realized");
 }
 
 Value* Matrix::operator^(const Value *rhs) const
@@ -288,8 +361,30 @@ Value* Matrix::operator^(const Value *rhs) const
 			return tmp;
 		}
 	}
+	else if (rhs->GetType() == value_type::FUNCTION)
+	{
+		// throw std::runtime_error("COMPUTATION ERROR! Matrix *operator^ Function - don't realized");
+		const Function	*tmp_fun = static_cast<const Function*>(rhs);
+		std::vector<Token> tmp_token = to_token();
+		Function *tmp_new = new Function(*tmp_fun);
+		tmp_new->_simple = false;
+		tmp_new->_map.clear();
+		tmp_new->_func.insert(tmp_new->_func.begin(), Token("(", token_type::BRACET));
+		tmp_new->_func.push_back(Token(")", token_type::BRACET));
+		tmp_new->_func.insert(tmp_new->_func.begin(), Token("^", token_type::OPERATION));
+		tmp_new->_func.insert(tmp_new->_func.begin(), Token(")", token_type::BRACET));
+		tmp_new->_func.insert(tmp_new->_func.begin(), tmp_token.begin(), tmp_token.end());
+		tmp_new->_func.insert(tmp_new->_func.begin(), Token("(", token_type::BRACET));
+
+		// tmp_new->_func.push_back(Token(")", token_type::BRACET));
+		return tmp_new;
+	}
+	else if (rhs->GetType() == value_type::COMPLEX)
+	{
+		throw std::runtime_error("COMPUTATION ERROR! Matrix *operator^ Complex - don't realized");
+	}
 	else
-		throw std::runtime_error("ERROR!!! Matrix operator^");
+		throw std::runtime_error("COMPUTATION ERROR! Matrix *operator^");
 }
 
 Value* Matrix::matrix_miltiple(const Value *rhs) const
@@ -309,7 +404,7 @@ Value* Matrix::matrix_miltiple(const Value *rhs) const
 		return (tmp);
 	}
 	else
-		throw std::runtime_error("ERROR!!! Matrix matrix_miltiple");
+		throw std::runtime_error("COMPUTATION ERROR!!! Matrix matrix_miltiple");
 }
 
 //ctrl+c -> ctrl+v from project enter_the_matrix

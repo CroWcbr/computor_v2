@@ -26,7 +26,13 @@ Function::Function(Lexer const &lex, Value const *val):Value(value_type::FUNCTIO
 		_simple = false;
 	}
 	else if (val->GetType() == value_type::MATRIX)
-		throw std::runtime_error("COMPUTATION ERROR! Function make matrix");
+	{
+		// throw std::runtime_error("COMPUTATION ERROR! Function make matrix");
+		const Matrix	*tmp_mat = static_cast<const Matrix*>(val);
+		_func = tmp_mat->to_token();
+		_map.clear();
+		_simple = false;
+	}
 }
 
 Function::Function(std::string const &unknown, std::map<int, double> const &tok):Value(value_type::FUNCTION, "_tmp")
@@ -237,8 +243,8 @@ Value* Function::operator*(const Value *rhs) const
 	}
 	else
 	{
-		if (rhs->GetType() == value_type::MATRIX)
-			throw std::runtime_error("COMPUTATION ERROR! Function *operator*");
+		// if (rhs->GetType() == value_type::MATRIX)
+		// 	throw std::runtime_error("COMPUTATION ERROR! Function *operator*");
 		Function *tmp_new = new Function(*this);
 		tmp_new->_simple = false;
 		tmp_new->_map.clear();
@@ -284,8 +290,8 @@ Value* Function::operator/(const Value *rhs) const
 	}
 	else
 	{
-		if (rhs->GetType() == value_type::MATRIX)
-			throw std::runtime_error("COMPUTATION ERROR! Function *operator/");
+		// if (rhs->GetType() == value_type::MATRIX)
+		// 	throw std::runtime_error("COMPUTATION ERROR! Function *operator/");
 		Function *tmp_new = new Function(*this);
 		tmp_new->_simple = false;
 		tmp_new->_map.clear();
@@ -332,7 +338,7 @@ Value* Function::operator%(const Value *rhs) const
 	else
 	{
 		if (rhs->GetType() == value_type::MATRIX)
-			throw std::runtime_error("COMPUTATION ERROR! Function *operator%");
+			throw std::runtime_error("COMPUTATION ERROR! Function *operator%% Matrix - don't realized");
 		Function *tmp_new = new Function(*this);
 		tmp_new->_simple = false;
 		tmp_new->_map.clear();
@@ -387,8 +393,8 @@ Value* Function::operator^(const Value *rhs) const
 	}
 	else
 	{
-		if (rhs->GetType() == value_type::MATRIX)
-			throw std::runtime_error("COMPUTATION ERROR! Function *operator^");
+		// if (rhs->GetType() == value_type::MATRIX)
+		// 	throw std::runtime_error("COMPUTATION ERROR! Function *operator^ Matrix - don't realized");
 		Function *tmp_new = new Function(*this);
 		tmp_new->_simple = false;
 		tmp_new->_map.clear();

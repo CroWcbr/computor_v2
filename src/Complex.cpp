@@ -80,7 +80,7 @@ Value* Complex::operator+(const Value *rhs) const
 	}
 	else if (rhs->GetType() == value_type::MATRIX)
 	{
-		throw std::runtime_error("COMPUTATION ERROR! Complex *operator+ Matrix - senseless operation");
+		throw std::runtime_error("COMPUTATION ERROR! Complex *operator+ Matrix - don't realized");
 	}
 	else
 		throw std::runtime_error("COMPUTATION ERROR! Complex *operator+");
@@ -130,7 +130,7 @@ Value* Complex::operator-(const Value *rhs) const
 	}
 	else if (rhs->GetType() == value_type::MATRIX)
 	{
-		throw std::runtime_error("COMPUTATION ERROR! Complex *operator- Matrix - senseless operation");
+		throw std::runtime_error("COMPUTATION ERROR! Complex *operator- Matrix - don't realized");
 	}
 	else
 		throw std::runtime_error("COMPUTATION ERROR! Complex *operator-");
@@ -164,7 +164,7 @@ Value* Complex::operator*(const Value *rhs) const
 	}
 	else if (rhs->GetType() == value_type::MATRIX)
 	{
-		throw std::runtime_error("COMPUTATION ERROR! Complex *operator* Matrix - senseless operation");
+		throw std::runtime_error("COMPUTATION ERROR! Complex *operator* Matrix - don't realized");
 	}
 	else
 		throw std::runtime_error("COMPUTATION ERROR! Complex *operator*");
@@ -221,7 +221,7 @@ Value* Complex::operator/(const Value *rhs) const
 	}
 	else if (rhs->GetType() == value_type::MATRIX)
 	{
-		throw std::runtime_error("COMPUTATION ERROR! Complex *operator/ Matrix - senseless operation");
+		throw std::runtime_error("COMPUTATION ERROR! Complex *operator/ Matrix - don't realized");
 	}
 	else
 		throw std::runtime_error("COMPUTATION ERROR! Complex *operator/");
@@ -235,7 +235,7 @@ Value* Complex::operator%(const Value *rhs) const
 	(void)rhs;
 	if (is_debug)
 		std::cout << "Complex *operator%" << std::endl;
-	throw std::runtime_error("COMPUTATION ERROR! Complex *operator% - senseless opeartion");
+	throw std::runtime_error("COMPUTATION ERROR! Complex *operator% - don't realized");
 }
 
 Value* Complex::operator^(const Value *rhs) const
@@ -285,11 +285,11 @@ Value* Complex::operator^(const Value *rhs) const
 	}
 	else if (rhs->GetType() == value_type::COMPLEX)
 	{
-		throw std::runtime_error("COMPUTATION ERROR! Complex *operator^ Complex - senseless operation");
+		throw std::runtime_error("COMPUTATION ERROR! Complex *operator^ Complex - don't realized");
 	}
 	else if (rhs->GetType() == value_type::MATRIX)
 	{
-		throw std::runtime_error("COMPUTATION ERROR! Complex *operator^ Matrix - senseless operation");
+		throw std::runtime_error("COMPUTATION ERROR! Complex *operator^ Matrix - don't realized");
 	}
 	else
 		throw std::runtime_error("ERROR!!! Complex operator^");

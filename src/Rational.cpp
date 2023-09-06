@@ -101,9 +101,9 @@ Value* Rational::operator-(const Value *rhs) const
 	else if (rhs->GetType() == value_type::MATRIX)
 	{
 		const Matrix	*tmp_mat = static_cast<const Matrix*>(rhs);
-		Rational	*tmp_rat_minus = new Rational(-1);
-		Value		*tmp_val_minus = NULL;
-		Value		*tmp_val = NULL;
+		Rational		*tmp_rat_minus = new Rational(-1);
+		Value			*tmp_val_minus = NULL;
+		Value			*tmp_val = NULL;
 		tmp_val_minus = *tmp_mat * tmp_rat_minus;
 		tmp_val = *tmp_val_minus + this;
 		delete tmp_rat_minus;	
@@ -241,7 +241,7 @@ Value* Rational::operator%(const Value *rhs) const
 	}
 	else if (rhs->GetType() == value_type::MATRIX)
 	{
-		throw std::runtime_error("ERROR!!! Rational operator%% Matrix - senseless operation");
+		throw std::runtime_error("ERROR!!! Rational operator%% Matrix - don't realized");
 	}
 	else if (rhs->GetType() == value_type::COMPLEX)
 	{
@@ -306,7 +306,7 @@ Value* Rational::operator^(const Value *rhs) const
 	}
 	else if (rhs->GetType() == value_type::MATRIX)
 	{
-		throw std::runtime_error("ERROR!!! Rational operator^ Matrix - senseless operation");
+		throw std::runtime_error("ERROR!!! Rational operator^ Matrix - don't realized");
 	}
 	else
 		throw std::runtime_error("ERROR!!! Rational operator^");
