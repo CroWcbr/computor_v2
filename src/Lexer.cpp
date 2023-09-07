@@ -360,9 +360,11 @@ void  Lexer::_check_matrix(std::vector<Token>& matrix) const
 				check_expr_again.push_back(matrix[i]);
 				i++;
 			}
+			if (check_expr_again.empty())
+				throw std::runtime_error("PARSE MATRIX ERROR! wrong beetwen ',???,'");
 			_check_expr(check_expr_again);
-			if (matrix[i].getLexem() != "]")
-				--square;
+			if (matrix[i].getLexem() == "]")
+				i--;
 			tmp_col++;
 		}
 	}
@@ -435,6 +437,8 @@ void Lexer::_check_expr(std::vector<Token>& expr) const
 			while (b != 0 && i <= len)
 			{
 				matrix.push_back(expr[i]);
+				// if (b > 2)
+				// 	throw std::runtime_error("PARSE ERROR! incorrect syntax in matrix, too much [");
 				if (expr[i].getLexem() == "[")
 					b++;
 				if (expr[i].getLexem() == "]")
