@@ -1,7 +1,7 @@
 NAME		=	computor_v2
 
 CC			=	g++
-CFLAGS		=	#-Wall -Werror -Wextra
+CFLAGS		=	-Wall -Werror -Wextra
 DRAW_FLAG	=	-lm -lglfw -lGL -ldl
 GLFW_LIB	=	-I./external/glfw
 
