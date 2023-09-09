@@ -66,6 +66,14 @@ if (is_debug)
 				_st_o.push(token[i]);
 			}
 		}
+		// if (is_debug)
+		// {
+		// 	std::cout << "!!!!!!!!!!!!!!" << std::endl;
+		// 	_st_n.top()->print();
+		// 	std::cout << std::endl;
+		// 	_st_o.top().getLexem();
+		// 	std::cout << "!!!!!!!!!!!!!!" << std::endl;
+		// }
 	}
 	while (!_st_o.empty())
 		_math();

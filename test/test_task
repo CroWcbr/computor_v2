@@ -1,0 +1,49 @@
+debug
+varA = 2
+varB = 4.242
+varC = -4.3
+show
+varA = 2*i + 3
+varB = -4i - 4
+show
+varA = [[2,3];[4,3]]
+varB = [[3,4]]
+show
+funA(x) = 2*x^5 + 4x^2 - 5*x + 4
+funB(y) = 43 * y / (4 % 2 * y)
+funC(z) = -2 * z - 5
+show
+x = 2
+y = x
+y = 7
+y = 2 *i - 4
+show
+varA = 2 + 4 *2 - 5 %4 + 2 * (4 + 5)
+varB = 2 * varA - 5 %4
+funA(xx) = varA + varB * 4 - 1 / 2 + xx
+varC = 2 * varA - varB
+varD = funA(varC)
+show
+a = 2 * 4 + 4
+a + 2 = ?
+funA(xx) = 2 * 4 + xx
+funB(xx) = 4 - 5 + (xx + 2)^2 - 4
+funC(xx) = 4xx + 5 - 2
+funA(2) + funB(4) = ?
+funC(3) = ?
+show
+funA(xx) = xx^2 + 2xx + 1
+y = 0
+funA(xx) = y ?
+show
+varA = 2
+varB= 2 * (4 + varA + 3)
+varC =2 * varB
+varD = 2 *(2 + 4 *varC -4 /3)
+matA = [[1,2];[3,2];[3,4]]
+matB= [[1,2]]
+funA(b) = 2*b+b
+funB(a) =2 * a
+funC(yy) =2* yy + 4 -2 *4+1/3
+funD(xx) = 2 *xx
+history

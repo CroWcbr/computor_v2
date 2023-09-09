@@ -9,8 +9,6 @@
 # include <sstream>
 # include <fstream>
 
-extern bool is_debug;
-
 class Token;
 class Value;
 

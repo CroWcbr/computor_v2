@@ -7,3 +7,5 @@
 # include "Complex.hpp"
 # include "Function.hpp"
 # include "Matrix.hpp"
+
+extern bool is_debug;

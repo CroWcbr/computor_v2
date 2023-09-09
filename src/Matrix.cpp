@@ -144,7 +144,7 @@ Value* Matrix::operator+(const Value *rhs) const
 	if (rhs->GetType() == value_type::MATRIX)
 	{
 		const Matrix	*tmp_mat = static_cast<const Matrix*>(rhs);
-		if (_row != tmp_mat->getRow() && _col != tmp_mat->getCol())
+		if (_row != tmp_mat->getRow() || _col != tmp_mat->getCol())
 			throw(std::runtime_error("COMPUTATION ERROR! Matrix *operator+ : different size"));
 		Matrix *tmp = new Matrix(*this);
 		for (int i = 0, len = _mat.size(); i < len; ++i)
@@ -180,7 +180,7 @@ Value* Matrix::operator-(const Value *rhs) const
 	if (rhs->GetType() == value_type::MATRIX)
 	{
 		const Matrix	*tmp_mat = static_cast<const Matrix*>(rhs);
-		if (_row != tmp_mat->getRow() && _col != tmp_mat->getCol())
+		if (_row != tmp_mat->getRow() || _col != tmp_mat->getCol())
 			throw(std::runtime_error("COMPUTATION ERROR! Matrix *operator- : different size"));
 		Matrix *tmp = new Matrix(*this);
 		for (int i = 0, len = _mat.size(); i < len; ++i)
@@ -232,11 +232,18 @@ Value* Matrix::operator*(const Value *rhs) const
 	else if (rhs->GetType() == value_type::MATRIX)
 	{
 		const Matrix	*tmp_mat = static_cast<const Matrix*>(rhs);
-		if (_row != tmp_mat->getRow() || _col != tmp_mat->getCol())
-			throw(std::runtime_error("COMPUTATION ERROR! Matrix *operator* : different size"));
-		Matrix *tmp = new Matrix(*this);
-		for (int i = 0, len = _mat.size(); i < len; ++i)
-			tmp->_mat[i] *= tmp_mat->getMat()[i];
+		if (_col != tmp_mat->getRow())
+			throw(std::runtime_error("COMPUTATION ERROR! Matrix *operator* : _col != tmp_mat->getRow()"));
+		Matrix	*tmp = new Matrix(_row, tmp_mat->getCol());
+			for (int r1 = 0; r1 < tmp->getRow(); r1++)
+			{
+				for (int c2 = 0; c2 < tmp->getCol(); c2++)
+				{
+					tmp->_mat[r1 * tmp->getCol() + c2] = 0;
+					for (int cr = 0; cr < _col; cr++)
+						tmp->_mat[r1 * tmp->getCol() + c2] += _mat[r1 * _col + cr] * tmp_mat->getMat()[cr * tmp_mat->getCol() + c2];
+				}
+			}
 		return (tmp);
 	}
 	else if (rhs->GetType() == value_type::FUNCTION)

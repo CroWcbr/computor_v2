@@ -1,7 +1,39 @@
-a = [[1,2];[3,4]]
-f(x) = x
-g(x) = x + a
-c(x) = x / a
-b = 3 + i
-v = a + b
-q(x) = b + a
+debug
+a = 5
+b = -5
+sin(a) = ?
+sin(b) = ?
+cos(a) = ?
+cos(b) = ?
+tan(a) = ?
+tan(b) = ?
+ctg(a) = ?
+ctg(b) = ?
+sqrt(a) = ?
+sqrt(b) = ?
+ln(a) = ?
+ln (b) = ?
+log(a) = ?
+log(b) = ?
+abs(a) = ?
+abs(b) = ?
+history
+change_mod
+sin(a) = ?
+sin(b) = ?
+funA(xx) = 2*xx+1
+funB(xx) = 2 * xx+1
+funA(funB(xx)) = ?
+norm(a) = ?
+norm(b) = ?
+matA = [[1,2];[3,2];[3,4]]
+matB = [[2,3];[4,3]]
+matA^(-1) = ?
+matB^(-1) = ?
+matA * matB = ?
+matA + matB = ?
+matA + matA = ?
+matA - matA = ?
+matB * (matB ^ (-1)) = ?
+f(x) = (x^2 + 2x + 1)*(x^3+2x+3)
+history

@@ -236,8 +236,20 @@ Value* Function::operator*(const Value *rhs) const
 					tmp_answer[m1.first + m2.first] += m1.second * m2.second;
 			}
 		}
-
-		if (tmp_first.size() == 1 && tmp_first.find(0) != tmp_first.end())
+		for (auto m = tmp_answer.begin(); m != tmp_answer.end();)
+		{
+			if ((*m).second == 0)
+			{
+				m = tmp_answer.erase(m);
+			}
+			else
+			{
+				++m;
+			}
+		}
+		if (tmp_answer.empty())
+			return new Rational(0);
+		if (tmp_answer.size() == 1 && tmp_answer.find(0) != tmp_answer.end())
 			return new Rational(tmp_first[0]);
 		return new Function(_unknown, tmp_answer);
 	}
@@ -291,7 +303,7 @@ Value* Function::operator/(const Value *rhs) const
 	else
 	{
 		// if (rhs->GetType() == value_type::MATRIX)
-		// 	throw std::runtime_error("COMPUTATION ERROR! Function *operator/");
+		// 	throw std::runtime_error("COMPUTATION ERROR! Function *operator/")
 		Function *tmp_new = new Function(*this);
 		tmp_new->_simple = false;
 		tmp_new->_map.clear();
